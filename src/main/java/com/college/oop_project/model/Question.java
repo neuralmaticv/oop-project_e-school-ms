@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Question {
-    private String question;
+    private final String question;
     private String answer;
     public static ArrayList<Question> questions = new ArrayList<>();
 

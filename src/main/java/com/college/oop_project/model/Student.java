@@ -8,10 +8,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Student {
-    private String firstName;
-    private String lastName;
-    private String sex;
-    private AccessData accessData;
+    private final String firstName;
+    private final String lastName;
+    private final String sex;
+    private final AccessData accessData;
     public ArrayList<SchoolSubject> listOfSubjects = new ArrayList<>();
     public ArrayList<Grade> listOfGrades = new ArrayList<>();
     public ArrayList<Absences> listOfAbsences = new ArrayList<>();
@@ -77,7 +77,7 @@ public class Student {
     public ArrayList<Grade> getGradesForSubject(SchoolSubject subject) {
         ArrayList<Grade> list = new ArrayList<>();
 
-        for (Grade grade: listOfGrades) {
+        for (Grade grade : listOfGrades) {
             if (grade.getSubject() == subject.getSubject()) {
                 System.out.println(grade.getDate() + " -> " + subject.getSubject().getName() + " ->" + grade.getGrade());
                 list.add(grade);

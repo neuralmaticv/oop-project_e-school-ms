@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Professor {
-    private String firstName;
-    private String lastName;
-    private String sex;
-    private AccessData accessData;
+    private final String firstName;
+    private final String lastName;
+    private final String sex;
+    private final AccessData accessData;
     public static ArrayList<Professor> allProfessors = new ArrayList<>();
 
     public Professor(String firstName, String lastName, String sex, AccessData accessData) {

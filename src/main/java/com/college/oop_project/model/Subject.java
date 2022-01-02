@@ -8,8 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Subject {
-    private String name;
-    private int schoolGrade;
+    private final String name;
+    private final int schoolGrade;
     public static ArrayList<Subject> subjects = new ArrayList<>();
 
     public static void getSubjectsFromDB() {
@@ -45,7 +45,7 @@ public class Subject {
     }
 
     private boolean subjectExist(Subject subject) {
-        for (Subject s: subjects) {
+        for (Subject s : subjects) {
             if (s.name.equals(subject.name) && s.schoolGrade == subject.schoolGrade) {
                 return true;
             }

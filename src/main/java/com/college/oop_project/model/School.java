@@ -8,10 +8,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class School {
-    private String schoolName;
-    private String place;
-    private String city;
-    private String country;
+    private final String schoolName;
+    private final String place;
+    private final String city;
+    private final String country;
     public static ArrayList<School> schools = new ArrayList<>();
 
     public static void getSchoolsFromDB() {
@@ -53,9 +53,9 @@ public class School {
     }
 
     private boolean schoolExist(School school) {
-        for (School s: schools) {
+        for (School s : schools) {
             if (s.schoolName.equals(school.schoolName) && s.city.equals(school.city)
-            && s.place.equals(school.place) && s.country.equals(school.country)) {
+                    && s.place.equals(school.place) && s.country.equals(school.country)) {
                 return true;
             }
         }

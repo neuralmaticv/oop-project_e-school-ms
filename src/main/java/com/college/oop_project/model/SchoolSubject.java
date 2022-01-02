@@ -3,9 +3,9 @@ package com.college.oop_project.model;
 import java.util.ArrayList;
 
 public class SchoolSubject {
-    private Subject subject;
-    private School school;
-    private Professor professor;
+    private final Subject subject;
+    private final School school;
+    private final Professor professor;
     public ArrayList<SchoolSubject> schoolSubjects = new ArrayList<>();
 
     public SchoolSubject(Subject subject, School school, Professor professor) {

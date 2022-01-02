@@ -1,10 +1,10 @@
 package com.college.oop_project.model;
 
 public class SubjectRank {
-    private Student student;
-    private SchoolSubject schoolSubject;
-    private Question question;
-    private int grade;
+    private final Student student;
+    private final SchoolSubject schoolSubject;
+    private final Question question;
+    private final int grade;
 
     public SubjectRank(Student student, SchoolSubject schoolSubject, Question question, int grade) {
         this.student = student;

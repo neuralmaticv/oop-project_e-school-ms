@@ -10,8 +10,8 @@ import java.util.Scanner;
 
 public class AccessData {
     private final int userID;
-    private String userName;
-    private String userMail;
+    private final String userName;
+    private final String userMail;
     private String userPassword;
     // MD5 kod, korisnicko_ime123 ???
 

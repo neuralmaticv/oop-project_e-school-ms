@@ -3,9 +3,9 @@ package com.college.oop_project.model;
 import java.util.ArrayList;
 
 public class Absences {
-    private Student student;
-    private Subject subject;
-    private String date;
+    private final Student student;
+    private final Subject subject;
+    private final String date;
     public static ArrayList<Absences> allAbsences = new ArrayList<>();
 
     public Absences(Student student, Subject subject, String date) {
