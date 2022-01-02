@@ -1,9 +1,15 @@
 package com.college.oop_project.model;
 
+import com.college.oop_project.sql.Driver;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AccessData {
+    private final int userID;
     private String userName;
     private String userMail;
     private String userPassword;
@@ -11,7 +17,41 @@ public class AccessData {
 
     public static ArrayList<AccessData> allAccessData = new ArrayList<>();
 
-    public AccessData(String userName, String userMail, String userPassword) {
+    public static void getAccessDataFromDB() {
+        Driver dr = new Driver();
+        dr.startConnection();
+
+        try {
+            Statement statement = dr.getConn().createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from pristupni_podaci");
+
+            while (resultSet.next()) {
+                int id = Integer.parseInt(resultSet.getString("id"));
+                String ime = resultSet.getString("korisnicko_ime");
+                String mail = resultSet.getString("email");
+                String pw = ime + "123";
+
+                new AccessData(id, ime, mail, pw);
+            }
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+
+        dr.endConnection();
+    }
+
+    public static int checkUser(String username, String userpass) {
+        for (AccessData ad : allAccessData) {
+            if (ad.userName.equals(username) && ad.userPassword.equals(userpass)) {
+                return ad.userID;
+            }
+        }
+
+        return -1;
+    }
+
+    public AccessData(int userID, String userName, String userMail, String userPassword) {
+        this.userID = userID;
         this.userName = userName;
         this.userMail = userMail;
         this.userPassword = userPassword;
@@ -20,19 +60,24 @@ public class AccessData {
             allAccessData.add(this);
         } else {
             // print msg, exception???
+            System.out.println("Postoji osoba sa ovakvim podacima");
         }
     }
 
     private boolean exists(AccessData data) {
         if (allAccessData != null) {
             for (AccessData ad : allAccessData) {
-                if (ad.userName.equals(data.userName) && ad.userMail.equals(data.userMail)) {
+                if (ad.userID != data.userID && ad.userName.equals(data.userName) && ad.userMail.equals(data.userMail)) {
                     return true;
                 }
             }
         }
 
         return false;
+    }
+
+    public int getUserID() {
+        return userID;
     }
 
     public String getUserName() {
@@ -45,6 +90,10 @@ public class AccessData {
 
     public String getUserMail() {
         return userMail;
+    }
+
+    public static AccessData getUser(int userID) {
+        return allAccessData.get(userID - 1);
     }
 
     public boolean setNewPassword() {
@@ -73,5 +122,16 @@ public class AccessData {
             System.out.println("Try again");
             return false;
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("UserID:").append(this.userID).append("\n");
+        sb.append("UserName:").append(this.userName).append("\n");
+        sb.append("UserMail:").append(this.userMail).append("\n");
+        sb.append("UserPass:").append(this.userPassword).append("\n");
+
+        return sb.toString();
     }
 }

@@ -12,13 +12,6 @@ public class Question {
     private String answer;
     public static ArrayList<Question> questions = new ArrayList<>();
 
-    public Question(String question, String answer) {
-        this.question = question;
-        this.answer = answer;
-
-        questions.add(this);
-    }
-
     public static void getQuestionsFromDB() {
         Driver dr = new Driver();
         dr.startConnection();
@@ -37,6 +30,13 @@ public class Question {
         dr.endConnection();
     }
 
+    public Question(String question, String answer) {
+        this.question = question;
+        this.answer = answer;
+
+        questions.add(this);
+    }
+
     public static Question getQuestion(int index) {
         return questions.get(index);
     }
@@ -47,6 +47,9 @@ public class Question {
 
     @Override
     public String toString() {
-        return "{"  + question  + " | ODGOVOR: " + answer + '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.question).append(" | Odgovor: ").append(this.answer);
+
+        return sb.toString();
     }
 }

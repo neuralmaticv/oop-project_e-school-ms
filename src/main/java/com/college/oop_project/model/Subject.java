@@ -12,6 +12,24 @@ public class Subject {
     private int schoolGrade;
     public static ArrayList<Subject> subjects = new ArrayList<>();
 
+    public static void getSubjectsFromDB() {
+        Driver dr = new Driver();
+        dr.startConnection();
+
+        try {
+            Statement statement = dr.getConn().createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from predmet");
+
+            while (resultSet.next()) {
+                new Subject(resultSet.getString("naziv"), Integer.parseInt(resultSet.getString("razred")));
+            }
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+
+        dr.endConnection();
+    }
+
     public Subject(String name, int schoolGrade) {
         this.name = name;
         this.schoolGrade = schoolGrade;
@@ -26,22 +44,14 @@ public class Subject {
         }
     }
 
-    public static void getSubjectsFromDB() {
-        Driver dr = new Driver();
-        dr.startConnection();
-
-        try {
-            Statement statement = dr.getConn().createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from predmet");
-
-            while (resultSet.next()) {
-                subjects.add(new Subject(resultSet.getString("naziv"), Integer.parseInt(resultSet.getString("razred"))));
+    private boolean subjectExist(Subject subject) {
+        for (Subject s: subjects) {
+            if (s.name.equals(subject.name) && s.schoolGrade == subject.schoolGrade) {
+                return true;
             }
-        } catch (SQLException err) {
-            err.printStackTrace();
         }
 
-        dr.endConnection();
+        return false;
     }
 
     public String getName() {
@@ -54,16 +64,10 @@ public class Subject {
 
     @Override
     public String toString() {
-        return "Subject{" + "name='" + name + ", schoolGrade=" + schoolGrade + '}';
-    }
+        StringBuilder sb = new StringBuilder();
+        sb.append("Predmet: ").append(this.name);
+        sb.append(" za ").append(this.schoolGrade).append(" razred");
 
-    private boolean subjectExist(Subject subject) {
-        for (Subject s: subjects) {
-            if (s.name.equals(subject.name) && s.schoolGrade == subject.schoolGrade) {
-                return true;
-            }
-        }
-
-        return false;
+        return sb.toString();
     }
 }
