@@ -22,4 +22,4 @@
 ---
 
 ## Licenca
-Ovaj projekat se nalazi pod [MIT licencom]().
+Ovaj projekat se nalazi pod [MIT licencom](https://github.com/vladocodes/oop-project/blob/main/LICENSE).
