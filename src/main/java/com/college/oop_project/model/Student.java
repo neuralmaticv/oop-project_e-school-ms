@@ -15,12 +15,42 @@ public class Student {
     public ArrayList<SchoolSubject> listOfSubjects = new ArrayList<>();
     public ArrayList<Grade> listOfGrades = new ArrayList<>();
     public ArrayList<Absences> listOfAbsences = new ArrayList<>();
+    public static ArrayList<Student> allStudents = new ArrayList<>();
 
-    public Student(String firstName, String lastName, String sex, AccessData accessData) {
+    public static void getStudentsFromDB() {
+        Driver dr = new Driver();
+        dr.startConnection();
+
+        try {
+            Statement statement = dr.getConn().createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from ucenik");
+
+            while (resultSet.next()) {
+                String name = resultSet.getString("ime");
+                String surname = resultSet.getString("prezime");
+                int sexCode = resultSet.getInt("pol");
+                int dataID = resultSet.getInt("pristupni_podaci_id") - 1;
+
+                if (sexCode == 1) {
+                    new Student(name, surname, "muski", dataID);
+                } else {
+                    new Student(name, surname, "zenski", dataID);
+                }
+            }
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+
+        dr.endConnection();
+    }
+
+    public Student(String firstName, String lastName, String sex, int dataID) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.sex = sex;
-        this.accessData = accessData;
+        this.accessData = AccessData.getUser(dataID);
+
+        allStudents.add(this);
     }
 
     public String getFirstName() {
@@ -37,30 +67,6 @@ public class Student {
 
     public AccessData getAccessData() {
         return accessData;
-    }
-
-    public static boolean getStudent(String firstName, String lastName) {
-        Driver dr = new Driver();
-        dr.startConnection();
-
-        try {
-            Statement statement = dr.getConn().createStatement();
-            String query = "SELECT korisnicko_ime FROM pristupni_podaci";
-            ResultSet result = statement.executeQuery(query);
-
-            while (result.next()) {
-                if (result.getString("korisnicko_ime").equals(firstName + "." + lastName)) {
-                    System.out.println("Student exists in database.");
-                    dr.endConnection();
-                    return true;
-                }
-            }
-            dr.endConnection();
-        } catch (SQLException err) {
-            err.printStackTrace();
-        }
-
-        return false;
     }
 
     public ArrayList<SchoolSubject> getListOfSubjects() {
@@ -91,6 +97,16 @@ public class Student {
         return listOfAbsences;
     }
 
+    public static Student getStudent(String username, String password) {
+        for (Student s : allStudents) {
+            if (s.accessData.getUserName().equals(username) && s.accessData.getUserPassword().equals(password)) {
+                return s;
+            }
+        }
+
+        return null;
+    }
+
     public void setSubjectRank(SchoolSubject subject) {
         // TODO:
         // If student has absences or has at least one grade for specified subject then student
@@ -102,5 +118,19 @@ public class Student {
         if (accessData.setNewPassword()) {
             System.out.println("...");
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Info about student:").append("\n");
+        sb.append("First name: ").append(this.firstName).append("\n");
+        sb.append("Last name: ").append(this.lastName).append("\n");
+        sb.append("Sex: ").append(this.sex).append("\n");
+        sb.append("Username: ").append(this.accessData.getUserName()).append("\n");
+        sb.append("Email: ").append(this.accessData.getUserMail()).append("\n");
+        sb.append("Password: ").append(this.accessData.getUserPassword()).append("\n");
+
+        return sb.toString();
     }
 }
