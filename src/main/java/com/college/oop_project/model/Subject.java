@@ -21,7 +21,7 @@ public class Subject {
             ResultSet resultSet = statement.executeQuery("select * from predmet");
 
             while (resultSet.next()) {
-                new Subject(resultSet.getString("naziv"), Integer.parseInt(resultSet.getString("razred")));
+                new Subject(resultSet.getString("naziv"), resultSet.getInt("razred"));
             }
         } catch (SQLException err) {
             err.printStackTrace();

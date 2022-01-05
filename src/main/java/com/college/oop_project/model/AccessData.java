@@ -13,8 +13,6 @@ public class AccessData {
     private final String userName;
     private final String userMail;
     private String userPassword;
-    // MD5 kod, korisnicko_ime123 ???
-
     public static ArrayList<AccessData> allAccessData = new ArrayList<>();
 
     public static void getAccessDataFromDB() {
@@ -26,12 +24,12 @@ public class AccessData {
             ResultSet resultSet = statement.executeQuery("select * from pristupni_podaci");
 
             while (resultSet.next()) {
-                int id = Integer.parseInt(resultSet.getString("id"));
-                String ime = resultSet.getString("korisnicko_ime");
+                int id = resultSet.getInt("id");
+                String userName = resultSet.getString("korisnicko_ime");
                 String mail = resultSet.getString("email");
-                String pw = ime + "123";
+                String pw = userName + "123";
 
-                new AccessData(id, ime, mail, pw);
+                new AccessData(id, userName, mail, pw);
             }
         } catch (SQLException err) {
             err.printStackTrace();
@@ -43,7 +41,7 @@ public class AccessData {
     public static int checkUser(String username, String userpass) {
         for (AccessData ad : allAccessData) {
             if (ad.userName.equals(username) && ad.userPassword.equals(userpass)) {
-                return ad.userID;
+                return ad.userID - 1;
             }
         }
 
@@ -93,7 +91,7 @@ public class AccessData {
     }
 
     public static AccessData getUser(int userID) {
-        return allAccessData.get(userID - 1);
+        return allAccessData.get(userID);
     }
 
     public boolean setNewPassword() {
