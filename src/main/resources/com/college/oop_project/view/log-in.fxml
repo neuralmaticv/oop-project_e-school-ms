@@ -24,7 +24,7 @@
             <Label layoutX="110.0" layoutY="192.0" style="-fx-font-weight: bold;" text="Šifra:" />
             <TextField fx:id="usernameInput" layoutX="159.0" layoutY="134.0" />
             <PasswordField fx:id="userpassInput" layoutX="159.0" layoutY="188.0" />
-            <Button fx:id="btnSubmit" layoutX="245.0" layoutY="268.0" mnemonicParsing="false" onAction="#login" prefHeight="28.0" prefWidth="84.0" style="-fx-background-color: #06d6a0; -fx-font-weight: bold;" text="Prijava" textFill="WHITE">
+            <Button fx:id="btnSubmit" layoutX="245.0" layoutY="268.0" mnemonicParsing="false" onAction="#btnSubmitAction" prefHeight="28.0" prefWidth="84.0" style="-fx-background-color: #06d6a0; -fx-font-weight: bold;" text="Prijava" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
