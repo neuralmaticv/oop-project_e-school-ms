@@ -1,5 +1,6 @@
 package com.college.oop_project.app;
 
+import com.college.oop_project.sql.DBUtils;
 import com.college.oop_project.view.View;
 
 public class StudentManagementSystem {
@@ -10,6 +11,7 @@ public class StudentManagementSystem {
     }
 
     public void run() {
+        DBUtils.getDataFromDB();
         view.drawView();
     }
 }

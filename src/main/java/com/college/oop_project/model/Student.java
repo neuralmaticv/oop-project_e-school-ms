@@ -1,10 +1,5 @@
 package com.college.oop_project.model;
 
-import com.college.oop_project.sql.Driver;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Student {
@@ -16,33 +11,6 @@ public class Student {
     public ArrayList<Grade> listOfGrades = new ArrayList<>();
     public ArrayList<Absences> listOfAbsences = new ArrayList<>();
     public static ArrayList<Student> allStudents = new ArrayList<>();
-
-    public static void getStudentsFromDB() {
-        Driver dr = new Driver();
-        dr.startConnection();
-
-        try {
-            Statement statement = dr.getConn().createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from ucenik");
-
-            while (resultSet.next()) {
-                String name = resultSet.getString("ime");
-                String surname = resultSet.getString("prezime");
-                int sexCode = resultSet.getInt("pol");
-                int dataID = resultSet.getInt("pristupni_podaci_id") - 1;
-
-                if (sexCode == 1) {
-                    new Student(name, surname, "muski", dataID);
-                } else {
-                    new Student(name, surname, "zenski", dataID);
-                }
-            }
-        } catch (SQLException err) {
-            err.printStackTrace();
-        }
-
-        dr.endConnection();
-    }
 
     public Student(String firstName, String lastName, String sex, int dataID) {
         this.firstName = firstName;

@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 
 public class GUIView extends Application implements View {
@@ -17,7 +18,7 @@ public class GUIView extends Application implements View {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/college/oop_project/view/log-in.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load(), 700, 600);
-        stage.setTitle("Student Management System | Log in");
+        stage.setTitle("eDnevnik | Prijava");
         stage.setScene(scene);
         stage.show();
     }

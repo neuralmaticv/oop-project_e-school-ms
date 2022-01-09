@@ -1,10 +1,5 @@
 package com.college.oop_project.model;
 
-import com.college.oop_project.sql.Driver;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,29 +9,6 @@ public class AccessData {
     private final String userMail;
     private String userPassword;
     public static ArrayList<AccessData> allAccessData = new ArrayList<>();
-
-    public static void getAccessDataFromDB() {
-        Driver dr = new Driver();
-        dr.startConnection();
-
-        try {
-            Statement statement = dr.getConn().createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from pristupni_podaci");
-
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String userName = resultSet.getString("korisnicko_ime");
-                String mail = resultSet.getString("email");
-                String pw = userName + "123";
-
-                new AccessData(id, userName, mail, pw);
-            }
-        } catch (SQLException err) {
-            err.printStackTrace();
-        }
-
-        dr.endConnection();
-    }
 
     public static int checkUser(String username, String userpass) {
         for (AccessData ad : allAccessData) {

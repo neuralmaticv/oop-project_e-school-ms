@@ -1,10 +1,5 @@
 package com.college.oop_project.model;
 
-import com.college.oop_project.sql.Driver;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 public class School {
@@ -13,29 +8,6 @@ public class School {
     private final String city;
     private final String country;
     public static ArrayList<School> schools = new ArrayList<>();
-
-    public static void getSchoolsFromDB() {
-        Driver dr = new Driver();
-        dr.startConnection();
-
-        try {
-            Statement statement = dr.getConn().createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from skola");
-
-            while (resultSet.next()) {
-                String naziv = resultSet.getString("naziv");
-                String mjesto = resultSet.getString("mjesto");
-                String grad = resultSet.getString("grad");
-                String drzava = resultSet.getString("drzava");
-
-                new School(naziv, mjesto, grad, drzava);
-            }
-        } catch (SQLException err) {
-            err.printStackTrace();
-        }
-
-        dr.endConnection();
-    }
 
     public School(String schoolName, String place, String city, String country) {
         this.schoolName = schoolName;

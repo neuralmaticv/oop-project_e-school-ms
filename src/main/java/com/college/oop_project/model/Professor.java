@@ -1,10 +1,5 @@
 package com.college.oop_project.model;
 
-import com.college.oop_project.sql.Driver;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,33 +9,6 @@ public class Professor {
     private final String sex;
     private final AccessData accessData;
     public static ArrayList<Professor> allProfessors = new ArrayList<>();
-
-    public static void getProfessorsFromDB() {
-        Driver dr = new Driver();
-        dr.startConnection();
-
-        try {
-            Statement statement = dr.getConn().createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from profesor");
-
-            while (resultSet.next()) {
-                String name = resultSet.getString("ime");
-                String surname = resultSet.getString("prezime");
-                int sexCode = resultSet.getInt("pol");
-                int dataID = resultSet.getInt("pristupni_podaci_id") - 1;
-
-                if (sexCode == 1) {
-                    new Professor(name, surname, "muski", dataID);
-                } else {
-                    new Professor(name, surname, "zenski", dataID);
-                }
-            }
-        } catch (SQLException err) {
-            err.printStackTrace();
-        }
-
-        dr.endConnection();
-    }
 
     public Professor(String firstName, String lastName, String sex, int dataID) {
         this.firstName = firstName;

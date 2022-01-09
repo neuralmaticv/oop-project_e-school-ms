@@ -1,9 +1,7 @@
 package com.college.oop_project.view;
 
-import com.college.oop_project.model.AccessData;
-import com.college.oop_project.model.Question;
-import com.college.oop_project.model.School;
-import com.college.oop_project.model.Subject;
+import com.college.oop_project.model.*;
+import com.college.oop_project.sql.DBUtils;
 
 import java.util.Scanner;
 
@@ -17,26 +15,31 @@ public class ConsoleView implements View {
         * */
 
         System.out.println("-------------| PITANJA |-------------");
-        Question.getQuestionsFromDB();
         System.out.println(Question.questions);
 
         System.out.println("\n\n");
 
         System.out.println("-------------| PREDMETI |-------------");
-        Subject.getSubjectsFromDB();
         System.out.println(Subject.subjects);
 
         System.out.println("\n\n");
 
         System.out.println("-------------| SKOLE |-------------");
-        School.getSchoolsFromDB();
         System.out.println(School.schools);
 
         System.out.println("\n\n");
 
         System.out.println("-------------| PRISTUPNI PODACI |-------------");
-        AccessData.getAccessDataFromDB();
         System.out.println(AccessData.allAccessData);
+        System.out.println(AccessData.allAccessData.size());
+
+        System.out.println("-------------| PROFESORI |-------------");
+        System.out.println(Professor.allProfessors);
+        System.out.println(Professor.allProfessors.size());
+
+        System.out.println("-------------| UCENICI |-------------");
+        System.out.println(Student.allStudents);
+        System.out.println(Student.allStudents.size());
 
 
         System.out.println("=====================================================");
@@ -45,23 +48,23 @@ public class ConsoleView implements View {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
+            System.out.print("Enter number != -1 to continue: ");
+            int controller = scanner.nextInt();
+            if (controller == -1)
+                break;
+
             System.out.print("Username: ");
             String username = scanner.next();
             System.out.print("Password: ");
             String password = scanner.next();
 
-            int userID = AccessData.checkUser(username, password);
+            Student s1 = Student.getStudent(username, password);
+            System.out.println(s1);
 
-            if (userID != -1) {
-                AccessData a1 = AccessData.getUser(userID);
-                System.out.println(a1);
-            } else {
-                System.out.println("PRISTUPNI PODACI NISU ISPRAVNI ILI KORISNIK NE POSTOJI");
+            if (s1 == null) {
+                Professor p1 = Professor.getProfessor(username, password);
+                System.out.println(p1);
             }
-
-            int controller = scanner.nextInt();
-            if (controller == -1)
-                break;
         }
     }
 }
