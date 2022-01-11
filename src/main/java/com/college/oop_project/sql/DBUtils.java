@@ -2,6 +2,9 @@ package com.college.oop_project.sql;
 
 import com.college.oop_project.model.*;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -31,7 +34,7 @@ public class DBUtils {
                 int id = resultSet.getInt("id");
                 String userName = resultSet.getString("korisnicko_ime");
                 String mail = resultSet.getString("email");
-                String pw = userName + "123";
+                String pw = resultSet.getString("sifra");
 
                 new AccessData(id, userName, mail, pw);
             }
@@ -126,5 +129,26 @@ public class DBUtils {
         } catch (SQLException err) {
             err.printStackTrace();
         }
+    }
+
+
+    public static String getHashValue(String password) {
+        StringBuilder sb = new StringBuilder();
+
+        try {
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+
+            byte[] bytesOfPassword = password.getBytes(StandardCharsets.UTF_8);
+            byte[] hash = md5.digest(bytesOfPassword);
+
+            // Convert hash into HEX value
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b));
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return sb.toString();
     }
 }
