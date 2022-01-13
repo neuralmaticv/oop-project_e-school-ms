@@ -17,7 +17,7 @@ public class GUIView extends Application implements View {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/college/oop_project/view/log-in.fxml"));
 
-        Scene scene = new Scene(fxmlLoader.load(), 700, 600);
+        Scene scene = new Scene(fxmlLoader.load(), 900, 600);
         stage.setTitle("eDnevnik | Prijava");
         stage.setScene(scene);
         stage.show();
