@@ -5,6 +5,7 @@ import com.college.oop_project.model.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -131,6 +132,79 @@ public class DBUtils {
         }
     }
 
+    public static void addSchoolToDB(String name, String place, String city, String country) {
+        dr.startConnection();
+
+        try {
+            String query = "INSERT INTO skola(naziv, grad, mjesto, drzava) VALUES (?,?,?,?)";
+            PreparedStatement statement = dr.getConn().prepareStatement(query);
+            statement.setString(1, name);
+            statement.setString(2, city);
+            statement.setString(3, place);
+            statement.setString(4, country);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        dr.endConnection();
+    }
+
+    public static void addProfessorToDB(String firstName, String lastName, int sex, int id) {
+        dr.startConnection();
+
+        try {
+            String query = "INSERT INTO profesor(ime, prezime, pol, pristupni_podaci_id) VALUES (?,?,?,?)";
+            PreparedStatement statement = dr.getConn().prepareStatement(query);
+            statement.setString(1, firstName);
+            statement.setString(2, lastName);
+            statement.setInt(3, sex);
+            statement.setInt(4, id);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        dr.endConnection();
+    }
+
+    public static void addStudentToDB(String firstName, String lastName, int sex, int id) {
+        dr.startConnection();
+
+        try {
+            String query = "INSERT INTO ucenik(ime, prezime, pol, pristupni_podaci_id) VALUES (?,?,?,?)";
+            PreparedStatement statement = dr.getConn().prepareStatement(query);
+            statement.setString(1, firstName);
+            statement.setString(2, lastName);
+            statement.setInt(3, sex);
+            statement.setInt(4, id);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        dr.endConnection();
+    }
+
+    public static void addSubjectToDB(String name, int grade) {
+        dr.startConnection();
+
+        try {
+            String query = "INSERT INTO predmet(naziv, razred) VALUES (?,?)";
+            PreparedStatement statement = dr.getConn().prepareStatement(query);
+            statement.setString(1, name);
+            statement.setInt(2, grade);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        dr.endConnection();
+    }
 
     public static String getHashValue(String password) {
         StringBuilder sb = new StringBuilder();
