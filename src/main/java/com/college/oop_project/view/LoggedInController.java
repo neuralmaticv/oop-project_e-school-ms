@@ -2,7 +2,6 @@ package com.college.oop_project.view;
 
 import com.college.oop_project.model.Professor;
 import com.college.oop_project.model.Student;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -18,34 +17,77 @@ import java.util.ResourceBundle;
 public class LoggedInController implements Initializable {
     @FXML
     private Label welcomeLabel;
-
     @FXML
     private Label firstName;
-
     @FXML
     private Label lastName;
-
     @FXML
     private Label email;
-
     @FXML
     private Label school;
-
     @FXML
     private Button btnLogout;
-
     @FXML
     private MenuBar professorMenuBar;
 
-    @FXML
-    private Button showPasswordPane;
 
     @FXML
     private Pane mainPane;
 
-    // @FXML
-    // private Label optionName;
 
+    // --------------------------------------------------
+    // add student pane
+    // --------------------------------------------------
+    @FXML
+    private Pane addStudentPane;
+
+    @FXML
+    private TextField studentNameInputField;
+
+    @FXML
+    private TextField studentSurnameInputField;
+
+    @FXML
+    private TextField studentMailInputField;
+
+    // add sex option - dropdown button
+    // studentSexInputField
+
+    @FXML
+    private Label addStudentMsgLbl;
+
+    @FXML
+    private Button addStudentBtn;
+
+
+    // --------------------------------------------------
+    // add professor pane
+    // --------------------------------------------------
+    @FXML
+    private Pane addProfessorPane;
+
+    @FXML
+    private TextField professorNameInputField;
+
+    @FXML
+    private TextField professorSurnameInputField;
+
+    @FXML
+    private TextField professorMailInputField;
+
+    // add sex option - dropdown button
+    // professorSexInputField
+
+    @FXML
+    private Label addProfessorMsgLbl;
+
+    @FXML
+    private Button addProfessorBtn;
+
+
+    // --------------------------------------------------
+    // change password pane
+    // --------------------------------------------------
     @FXML
     private Pane changePasswordPane;
 
@@ -70,6 +112,70 @@ public class LoggedInController implements Initializable {
     @FXML
     private Button changePasswordBtn;
 
+
+    // --------------------------------------------------
+    // add school pane
+    // --------------------------------------------------
+    @FXML
+    private Pane addSchoolPane;
+
+    @FXML
+    private TextField addSchoolNameInputField;
+
+    @FXML
+    private TextField addSchoolPlaceInputField;
+
+    @FXML
+    private TextField addSchoolCityInputField;
+
+    @FXML
+    private TextField addSchoolCountryInputField;
+
+    @FXML
+    private Label addSchoolMsgLbl;
+
+    @FXML
+    private Button addSchoolBtn;
+
+
+    // --------------------------------------------------
+    // add school subject pane
+    // --------------------------------------------------
+    @FXML
+    private Pane addSchoolSubjectPane;
+
+    @FXML
+    private TextField addSubjectNameInputField;
+
+    @FXML
+    private TextField addSubjectClassInputField;
+
+    @FXML
+    private Label addSubjectMsgLbl;
+
+    @FXML
+    private Button addSubjectBtn;
+
+    // --------------------------------------------------
+    // menu item bar
+    // --------------------------------------------------
+    @FXML
+    private MenuItem showAddStudentPane;
+
+    @FXML
+    private MenuItem showAddProfessorPane;
+
+    @FXML
+    private MenuItem showAddSchoolPane;
+
+    @FXML
+    private MenuItem showAddSubjectPane;
+
+
+
+    // --------------------------------------------------
+    // Methods
+    // --------------------------------------------------
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         btnLogout.setOnAction(event -> {
@@ -96,18 +202,42 @@ public class LoggedInController implements Initializable {
     }
 
     public void setProfessorInfo(Professor user) {
-        welcomeLabel.setText("Dobro dosli, " + user.getFirstName());
         firstName.setText(user.getFirstName());
         lastName.setText(user.getLastName());
         email.setText(user.getAccessData().getUserMail());
     }
 
+    public void backToMainPane() {
+        hideVisiblePane();
+        mainPane.setVisible(true);
+    }
+
+    public void showAddStudentPane() {
+        hideVisiblePane();
+        addStudentPane.setVisible(true);
+    }
+
+    public void showAddProfessorPane() {
+        hideVisiblePane();
+        addProfessorPane.setVisible(true);
+    }
+
+    public void showAddSchoolPane() {
+        hideVisiblePane();
+        addSchoolPane.setVisible(true);
+    }
+
+    public void showAddSubjectPane() {
+        hideVisiblePane();
+        addSchoolSubjectPane.setVisible(true);
+    }
+
     public void showChangePasswordPane() {
-        mainPane.setVisible(false);
+        hideVisiblePane();
         changePasswordPane.setVisible(true);
     }
 
-    public void showNewPasswordInput(ActionEvent event) {
+    public void showNewPasswordInput() {
         if (showPasswordsBtn.isSelected()) {
             newPasswordText.setText(newPasswordField.getText());
             confirmPasswordText.setText(confirmPasswordField.getText());
@@ -125,6 +255,22 @@ public class LoggedInController implements Initializable {
         }
     }
 
+    private void hideVisiblePane() {
+        if (mainPane.isVisible()) {
+            mainPane.setVisible(false);
+        } else if (addSchoolPane.isVisible()) {
+            addSchoolPane.setVisible(false);
+        } else if (addProfessorPane.isVisible()) {
+            addProfessorPane.setVisible(false);
+        } else if (addStudentPane.isVisible()) {
+            addStudentPane.setVisible(false);
+        } else if (addSchoolSubjectPane.isVisible()) {
+            addSchoolSubjectPane.setVisible(false);
+        } else if (changePasswordPane.isVisible()) {
+            changePasswordPane.setVisible(false);
+        }
+    }
+
     private boolean validatePasswords(String newPassword, String confirmPassword) {
         boolean validInput = false;
 
@@ -139,11 +285,6 @@ public class LoggedInController implements Initializable {
         }
 
         return validInput;
-    }
-
-    public void backToMainPane() {
-        changePasswordPane.setVisible(false);
-        mainPane.setVisible(true);
     }
 
     private void sendMail(String toUserMail, String password) {
