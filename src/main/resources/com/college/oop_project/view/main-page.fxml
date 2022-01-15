@@ -20,13 +20,14 @@
    <children>
       <HBox layoutX="50.0" layoutY="50.0" prefHeight="500.0" prefWidth="800.0">
          <children>
-            <AnchorPane prefHeight="500.0" prefWidth="277.0" style="-fx-background-color: white; -fx-border-color: white;">
+            <AnchorPane prefHeight="500.0" prefWidth="277.0" style="-fx-background-color: white;">
                <children>
-                  <Button fx:id="btnLogout" layoutX="14.0" layoutY="446.0" mnemonicParsing="false" style="-fx-background-color: red; -fx-font-weight: bold;" text="Odjavite se" />
+                  <Button fx:id="btnLogout" layoutX="28.0" layoutY="458.0" mnemonicParsing="false" style="-fx-background-color: red; -fx-font-weight: bold;" text="Odjavite se" textFill="WHITE" />
                   <Label fx:id="welcomeLabel" layoutX="51.0" layoutY="14.0" text="Informacije o korisniku:">
                      <font>
                         <Font size="15.0" />
-                     </font></Label>
+                     </font>
+                  </Label>
                   <Label layoutX="14.0" layoutY="54.0" style="-fx-font-weight: bold;" text="Ime:" />
                   <Label layoutX="14.0" layoutY="78.0" style="-fx-font-weight: bold;" text="Prezime:" />
                   <Label layoutX="14.0" layoutY="102.0" style="-fx-font-weight: bold;" text="Email:" />
@@ -35,33 +36,33 @@
                   <Label fx:id="lastName" layoutX="85.0" layoutY="78.0" prefHeight="16.0" prefWidth="110.0" text="Label" />
                   <Label fx:id="email" layoutX="85.0" layoutY="102.0" prefHeight="16.0" prefWidth="110.0" text="Label" />
                   <Label fx:id="school" layoutX="85.0" layoutY="128.0" prefHeight="16.0" prefWidth="110.0" text="Label" />
-                  <Button layoutX="140.0" layoutY="446.0" mnemonicParsing="false" onMouseClicked="#showChangePasswordPane" style="-fx-background-color: white;" text="Promjeni šifru?" textFill="#0839ac" />
+                  <Button layoutX="137.0" layoutY="458.0" mnemonicParsing="false" onMouseClicked="#showChangePasswordPane" style="-fx-background-color: white;" text="Promjeni šifru?" textFill="#0839ac" />
                </children>
             </AnchorPane>
             <BorderPane prefHeight="500.0" prefWidth="523.0">
                <top>
-                  <MenuBar fx:id="professorMenuBar" prefHeight="31.0" prefWidth="544.0" style="-fx-background-color: gray;" BorderPane.alignment="CENTER">
+                  <MenuBar fx:id="professorMenuBar" prefHeight="31.0" prefWidth="544.0" style="-fx-background-color: #f5aa1b;" BorderPane.alignment="CENTER">
                     <menus>
-                      <Menu mnemonicParsing="false" text="Ucenik">
+                      <Menu mnemonicParsing="false" style="-fx-font-weight: bold;" text="Škola">
                         <items>
-                          <MenuItem mnemonicParsing="false" onAction="#showAddStudentPane" text="Dodaj novog ucenika" />
-                              <MenuItem mnemonicParsing="false" text="Dodaj ocjenu" />
-                              <MenuItem mnemonicParsing="false" text="Dodaj izostanak" />
+                          <MenuItem mnemonicParsing="false" onAction="#showAddSchoolPane" text="Dodaj novu skolu" />
                         </items>
                       </Menu>
-                        <Menu mnemonicParsing="false" text="Profesor">
-                          <items>
-                            <MenuItem mnemonicParsing="false" onAction="#showAddProfessorPane" text="Dodaj novog profesora" />
-                          </items>
-                        </Menu>
-                      <Menu mnemonicParsing="false" text="Predmet">
+                      <Menu mnemonicParsing="false" style="-fx-font-weight: bold;" text="Predmet">
                         <items>
                           <MenuItem mnemonicParsing="false" onAction="#showAddSubjectPane" text="Dodaj novi predmet" />
                         </items>
                       </Menu>
-                      <Menu mnemonicParsing="false" text="Skola">
+                        <Menu mnemonicParsing="false" style="-fx-font-weight: bold;" text="Profesor">
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="#showAddProfessorPane" text="Dodaj novog profesora" />
+                          </items>
+                        </Menu>
+                      <Menu mnemonicParsing="false" style="-fx-font-weight: bold;" text="Ucenik">
                         <items>
-                          <MenuItem mnemonicParsing="false" onAction="#showAddSchoolPane" text="Dodaj novu skolu" />
+                          <MenuItem mnemonicParsing="false" onAction="#showAddStudentPane" text="Dodaj novog ucenika" />
+                              <MenuItem mnemonicParsing="false" text="Dodaj ocjenu" />
+                              <MenuItem mnemonicParsing="false" text="Dodaj izostanak" />
                         </items>
                       </Menu>
                     </menus>

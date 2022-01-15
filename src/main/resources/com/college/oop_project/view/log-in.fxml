@@ -13,18 +13,18 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.college.oop_project.view.LoginController">
    <center>
-      <AnchorPane prefHeight="350.0" prefWidth="350.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="350.0" prefWidth="350.0" style="-fx-background-color: white; -fx-border-color: #f5aa1b; -fx-border-width: 10px;" BorderPane.alignment="CENTER">
          <children>
             <Label layoutX="193.0" layoutY="61.0" text="eDnevnik">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label layoutX="104.0" layoutY="137.0" style="-fx-font-weight: bold;" text="Korisničko ime:" />
-            <Label layoutX="178.0" layoutY="192.0" style="-fx-font-weight: bold;" text="Šifra:" />
-            <TextField fx:id="usernameInput" layoutX="225.0" layoutY="133.0" />
-            <PasswordField fx:id="userpassInput" layoutX="225.0" layoutY="188.0" />
-            <TextField fx:id="passwordText" layoutX="225.0" layoutY="188.0" visible="false" />
+            <Label layoutX="79.0" layoutY="133.0" style="-fx-font-weight: bold;" text="Korisničko ime:" />
+            <Label layoutX="153.0" layoutY="192.0" style="-fx-font-weight: bold;" text="Šifra:" />
+            <TextField fx:id="usernameInput" layoutX="203.0" layoutY="129.0" prefHeight="24.0" prefWidth="200.0" />
+            <PasswordField fx:id="userpassInput" layoutX="203.0" layoutY="188.0" prefHeight="24.0" prefWidth="200.0" />
+            <TextField fx:id="passwordText" layoutX="203.0" layoutY="188.0" prefHeight="24.0" prefWidth="200.0" visible="false" />
             <Button fx:id="btnSubmit" layoutX="208.0" layoutY="292.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="84.0" style="-fx-background-color: #06d6a0; -fx-font-weight: bold;" text="Prijava" textFill="WHITE">
                <font>
                   <Font size="14.0" />
@@ -40,7 +40,7 @@
                   <Font size="10.0" />
                </font>
             </Label>
-            <CheckBox fx:id="showPassBtn" layoutX="225.0" layoutY="225.0" mnemonicParsing="false" onAction="#showPassword" text="Prikaži šifru">
+            <CheckBox fx:id="showPassBtn" layoutX="203.0" layoutY="225.0" mnemonicParsing="false" onAction="#showPassword" text="Prikaži šifru">
                <font>
                   <Font size="10.0" />
                </font>
