@@ -1,10 +1,10 @@
 package com.college.oop_project.view;
 
-import com.college.oop_project.model.Professor;
-import com.college.oop_project.model.Student;
+import com.college.oop_project.model.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 
 import javax.mail.*;
@@ -16,46 +16,30 @@ import java.util.ResourceBundle;
 
 public class LoggedInController implements Initializable {
     @FXML
-    private Label welcomeLabel;
+    private Label welcomeLabel, firstName, lastName, email, school, schoolLabel, place, placeLabel;
     @FXML
-    private Label firstName;
+    private Label grade, gradeLabel, subjectLabel;
     @FXML
-    private Label lastName;
-    @FXML
-    private Label email;
-    @FXML
-    private Label school;
+    private TextArea schoolList, subjectList;
     @FXML
     private Button btnLogout;
-    @FXML
-    private MenuBar professorMenuBar;
-
 
     @FXML
     private Pane mainPane;
-
 
     // --------------------------------------------------
     // add student pane
     // --------------------------------------------------
     @FXML
     private Pane addStudentPane;
-
     @FXML
-    private TextField studentNameInputField;
-
-    @FXML
-    private TextField studentSurnameInputField;
-
-    @FXML
-    private TextField studentMailInputField;
+    private TextField studentNameInputField, studentSurnameInputField, studentMailInputField;
 
     // add sex option - dropdown button
     // studentSexInputField
 
     @FXML
     private Label addStudentMsgLbl;
-
     @FXML
     private Button addStudentBtn;
 
@@ -65,22 +49,14 @@ public class LoggedInController implements Initializable {
     // --------------------------------------------------
     @FXML
     private Pane addProfessorPane;
-
     @FXML
-    private TextField professorNameInputField;
-
-    @FXML
-    private TextField professorSurnameInputField;
-
-    @FXML
-    private TextField professorMailInputField;
+    private TextField professorNameInputField, professorSurnameInputField, professorMailInputField;
 
     // add sex option - dropdown button
     // professorSexInputField
 
     @FXML
     private Label addProfessorMsgLbl;
-
     @FXML
     private Button addProfessorBtn;
 
@@ -90,25 +66,14 @@ public class LoggedInController implements Initializable {
     // --------------------------------------------------
     @FXML
     private Pane changePasswordPane;
-
     @FXML
-    private PasswordField newPasswordField;
-
+    private PasswordField newPasswordField, confirmPasswordField;
     @FXML
-    private PasswordField confirmPasswordField;
-
-    @FXML
-    private TextField newPasswordText;
-
-    @FXML
-    private TextField confirmPasswordText;
-
+    private TextField newPasswordText, confirmPasswordText;
     @FXML
     private CheckBox showPasswordsBtn;
-
     @FXML
     private Label changePwErrLabel;
-
     @FXML
     private Button changePasswordBtn;
 
@@ -118,22 +83,10 @@ public class LoggedInController implements Initializable {
     // --------------------------------------------------
     @FXML
     private Pane addSchoolPane;
-
     @FXML
-    private TextField addSchoolNameInputField;
-
-    @FXML
-    private TextField addSchoolPlaceInputField;
-
-    @FXML
-    private TextField addSchoolCityInputField;
-
-    @FXML
-    private TextField addSchoolCountryInputField;
-
+    private TextField addSchoolNameInputField, addSchoolPlaceInputField, addSchoolCityInputField, addSchoolCountryInputField;
     @FXML
     private Label addSchoolMsgLbl;
-
     @FXML
     private Button addSchoolBtn;
 
@@ -143,36 +96,64 @@ public class LoggedInController implements Initializable {
     // --------------------------------------------------
     @FXML
     private Pane addSchoolSubjectPane;
-
     @FXML
-    private TextField addSubjectNameInputField;
-
-    @FXML
-    private TextField addSubjectClassInputField;
-
+    private TextField addSubjectNameInputField, addSubjectClassInputField;
     @FXML
     private Label addSubjectMsgLbl;
-
     @FXML
     private Button addSubjectBtn;
+
+
+    // --------------------------------------------------
+    // student grades pane
+    // --------------------------------------------------
+    @FXML
+    private Pane showGradesPane;
+    @FXML
+    private RadioButton rbtnAllGrades, rbtnSortGradesByDate;
+    @FXML
+    private TextField subjectNameInput;
+    @FXML
+    private Button btnSubmitChoice;
+    @FXML
+    private TableView gradesTable;
+    @FXML
+    private TableColumn tbGradesDate, tbGradesSubjectName, tbGradesSubjectGrade;
+
+
+    // --------------------------------------------------
+    // student absences pane
+    // --------------------------------------------------
+    @FXML
+    private Pane showAbsencesPane;
+    @FXML
+    private TableView absencesTable;
+    @FXML
+    private TableColumn tbAbsencesDate, tbAbsencesSubjectName;
+
+
+    // --------------------------------------------------
+    // student absences pane
+    // --------------------------------------------------
+    @FXML
+    private Pane showRankProfessorPane;
+
+
 
     // --------------------------------------------------
     // menu item bar
     // --------------------------------------------------
     @FXML
-    private MenuItem showAddStudentPane;
-
+    private MenuBar menuBar;
     @FXML
-    private MenuItem showAddProfessorPane;
-
+    private Menu menu1, menu2, menu3, menu4;
     @FXML
-    private MenuItem showAddSchoolPane;
-
-    @FXML
-    private MenuItem showAddSubjectPane;
+    private MenuItem miShowGrades, miShowAbsences, miShowRankProfessor, miShowAddNewProfessor, miShowAddNewSubject, miShowAddNewSchool;
 
 
 
+    private Student s;
+    private Professor p;
     // --------------------------------------------------
     // Methods
     // --------------------------------------------------
@@ -195,21 +176,87 @@ public class LoggedInController implements Initializable {
         });
     }
 
+
     public void setStudentInfo(Student user) {
+        s = user;
+
         firstName.setText(user.getFirstName());
         lastName.setText(user.getLastName());
         email.setText(user.getAccessData().getUserMail());
+        school.setText("OŠ \"" + user.getSchool().getSchoolName() + "\"");
+        place.setText(user.getSchool().getPlace());
+        grade.setText(user.getSchoolGrade());
+
+        menu1.setText("Ocjene");
+        menu2.setText("Izostanci");
+        menu4.setVisible(false);
+        miShowGrades.setVisible(true);
+        miShowAbsences.setVisible(true);
+        miShowRankProfessor.setVisible(true);
+        miShowAddNewProfessor.setVisible(false);
+        miShowAddNewSubject.setVisible(false);
+        miShowAddNewSchool.setVisible(false);
     }
 
     public void setProfessorInfo(Professor user) {
         firstName.setText(user.getFirstName());
         lastName.setText(user.getLastName());
         email.setText(user.getAccessData().getUserMail());
+        schoolLabel.setText("Škole:");
+        school.setVisible(false);
+        placeLabel.setVisible(false);
+        gradeLabel.setVisible(false);
+        schoolList.setVisible(true);
+
+        StringBuilder sb = new StringBuilder();
+        for (School s: user.schools) {
+            sb.append("OŠ \"").append(s.getSchoolName()).append("\"").append(" - ").append(s.getPlace()).append("\n");
+        }
+        schoolList.setText(sb.toString());
+
+        sb.setLength(0);
+
+        subjectLabel.setVisible(true);
+        subjectList.setVisible(true);
+        for (Subject s: user.subjects) {
+            sb.append(s.getName()).append(" - ").append(s.getSchoolGrade()).append("\n");
+        }
+        subjectList.setText(sb.toString());
     }
 
     public void backToMainPane() {
         hideVisiblePane();
         mainPane.setVisible(true);
+    }
+
+    public void showGradesPane() {
+        hideVisiblePane();
+        showGradesPane.setVisible(true);
+
+        tbGradesDate.setCellValueFactory(new PropertyValueFactory("date"));
+        tbGradesSubjectName.setCellValueFactory(new PropertyValueFactory("subjectName"));
+        tbGradesSubjectGrade.setCellValueFactory(new PropertyValueFactory("subjectGrade"));
+
+        for (Grade g : s.listOfGrades) {
+            gradesTable.getItems().add(g);
+        }
+    }
+
+    public void showAbsencesPane() {
+        hideVisiblePane();
+        showAbsencesPane.setVisible(true);
+
+        tbAbsencesDate.setCellValueFactory(new PropertyValueFactory("date"));
+        tbAbsencesSubjectName.setCellValueFactory(new PropertyValueFactory("subjectName"));
+
+        for (Absences a : s.listOfAbsences) {
+            absencesTable.getItems().add(a);
+        }
+    }
+
+    public void showRankProfessorPane() {
+        hideVisiblePane();
+        showRankProfessorPane.setVisible(true);
     }
 
     public void showAddStudentPane() {
@@ -268,6 +315,12 @@ public class LoggedInController implements Initializable {
             addSchoolSubjectPane.setVisible(false);
         } else if (changePasswordPane.isVisible()) {
             changePasswordPane.setVisible(false);
+        } else if (showGradesPane.isVisible()) {
+            showGradesPane.setVisible(false);
+        } else if (showAbsencesPane.isVisible()) {
+            showAbsencesPane.setVisible(false);
+        } else if (showRankProfessorPane.isVisible()) {
+            showRankProfessorPane.setVisible(false);
         }
     }
 
@@ -280,7 +333,7 @@ public class LoggedInController implements Initializable {
             changePwErrLabel.setText("Dužina šifre treba da bude minimum 8 karaktera.");
         } else if (!newPassword.equals(confirmPassword)) {
             changePwErrLabel.setText("Šifre se ne podudaraju.");
-        } else if (newPassword.equals(confirmPassword)) {
+        } else {
             validInput = true;
         }
 

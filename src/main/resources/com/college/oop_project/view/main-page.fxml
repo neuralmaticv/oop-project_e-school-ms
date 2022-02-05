@@ -7,7 +7,12 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -31,34 +36,44 @@
                   <Label layoutX="14.0" layoutY="54.0" style="-fx-font-weight: bold;" text="Ime:" />
                   <Label layoutX="14.0" layoutY="78.0" style="-fx-font-weight: bold;" text="Prezime:" />
                   <Label layoutX="14.0" layoutY="102.0" style="-fx-font-weight: bold;" text="Email:" />
-                  <Label layoutX="14.0" layoutY="128.0" style="-fx-font-weight: bold;" text="Škola:" />
-                  <Label fx:id="firstName" layoutX="85.0" layoutY="54.0" prefHeight="16.0" prefWidth="110.0" text="Label" />
-                  <Label fx:id="lastName" layoutX="85.0" layoutY="78.0" prefHeight="16.0" prefWidth="110.0" text="Label" />
-                  <Label fx:id="email" layoutX="85.0" layoutY="102.0" prefHeight="16.0" prefWidth="110.0" text="Label" />
-                  <Label fx:id="school" layoutX="85.0" layoutY="128.0" prefHeight="16.0" prefWidth="110.0" text="Label" />
+                  <Label fx:id="schoolLabel" layoutX="14.0" layoutY="128.0" style="-fx-font-weight: bold;" text="Škola:" />
+                  <Label fx:id="firstName" layoutX="85.0" layoutY="54.0" prefHeight="16.0" prefWidth="165.0" text="Label" />
+                  <Label fx:id="lastName" layoutX="85.0" layoutY="78.0" prefHeight="16.0" prefWidth="165.0" text="Label" />
+                  <Label fx:id="email" layoutX="85.0" layoutY="102.0" prefHeight="16.0" prefWidth="165.0" text="Label" />
+                  <Label fx:id="school" layoutX="85.0" layoutY="128.0" prefHeight="16.0" prefWidth="165.0" text="Label" />
                   <Button layoutX="137.0" layoutY="458.0" mnemonicParsing="false" onMouseClicked="#showChangePasswordPane" style="-fx-background-color: white;" text="Promjeni šifru?" textFill="#0839ac" />
+                  <Label fx:id="placeLabel" layoutX="14.0" layoutY="152.0" style="-fx-font-weight: bold;" text="Mjesto:" />
+                  <Label fx:id="place" layoutX="85.0" layoutY="152.0" prefHeight="16.0" prefWidth="165.0" text="Label" />
+                  <Label fx:id="gradeLabel" layoutX="14.0" layoutY="175.0" style="-fx-font-weight: bold;" text="Razred:" />
+                  <Label fx:id="grade" layoutX="85.0" layoutY="175.0" prefHeight="16.0" prefWidth="110.0" text="Label" />
+                  <TextArea fx:id="schoolList" layoutX="14.0" layoutY="144.0" prefHeight="100.0" prefWidth="200.0" visible="false" />
+                  <Label fx:id="subjectLabel" layoutX="14.0" layoutY="261.0" style="-fx-font-weight: bold;" text="Predmeti:" visible="false" />
+                  <TextArea fx:id="subjectList" layoutX="14.0" layoutY="277.0" prefHeight="100.0" prefWidth="200.0" visible="false" />
                </children>
             </AnchorPane>
             <BorderPane prefHeight="500.0" prefWidth="523.0">
                <top>
-                  <MenuBar fx:id="professorMenuBar" prefHeight="31.0" prefWidth="544.0" style="-fx-background-color: #f5aa1b;" BorderPane.alignment="CENTER">
+                  <MenuBar fx:id="menuBar" prefHeight="31.0" prefWidth="544.0" style="-fx-background-color: #f5aa1b;" BorderPane.alignment="CENTER">
                     <menus>
-                      <Menu mnemonicParsing="false" style="-fx-font-weight: bold;" text="Škola">
+                      <Menu fx:id="menu1" mnemonicParsing="false" style="-fx-font-weight: bold;" text="Škola">
                         <items>
-                          <MenuItem mnemonicParsing="false" onAction="#showAddSchoolPane" text="Dodaj novu skolu" />
+                              <MenuItem fx:id="miShowGrades" mnemonicParsing="false" onAction="#showGradesPane" text="Prikaži ocjene" visible="false" />
+                          <MenuItem fx:id="miShowAddNewSchool" mnemonicParsing="false" onAction="#showAddSchoolPane" text="Dodaj novu skolu" />
                         </items>
                       </Menu>
-                      <Menu mnemonicParsing="false" style="-fx-font-weight: bold;" text="Predmet">
+                      <Menu fx:id="menu2" mnemonicParsing="false" style="-fx-font-weight: bold;" text="Predmet">
                         <items>
-                          <MenuItem mnemonicParsing="false" onAction="#showAddSubjectPane" text="Dodaj novi predmet" />
+                              <MenuItem fx:id="miShowAbsences" mnemonicParsing="false" onAction="#showAbsencesPane" text="Prikaži izostanke" visible="false" />
+                          <MenuItem fx:id="miShowAddNewSubject" mnemonicParsing="false" onAction="#showAddSubjectPane" text="Dodaj novi predmet" />
                         </items>
                       </Menu>
-                        <Menu mnemonicParsing="false" style="-fx-font-weight: bold;" text="Profesor">
+                        <Menu fx:id="menu3" mnemonicParsing="false" style="-fx-font-weight: bold;" text="Profesor">
                           <items>
-                            <MenuItem mnemonicParsing="false" onAction="#showAddProfessorPane" text="Dodaj novog profesora" />
+                              <MenuItem fx:id="miShowRankProfessor" mnemonicParsing="false" onAction="#showRankProfessorPane" text="Ocijeni rad profesora" visible="false" />
+                            <MenuItem fx:id="miShowAddNewProfessor" mnemonicParsing="false" onAction="#showAddProfessorPane" text="Dodaj novog profesora" />
                           </items>
                         </Menu>
-                      <Menu mnemonicParsing="false" style="-fx-font-weight: bold;" text="Ucenik">
+                      <Menu fx:id="menu4" mnemonicParsing="false" style="-fx-font-weight: bold;" text="Ucenik">
                         <items>
                           <MenuItem mnemonicParsing="false" onAction="#showAddStudentPane" text="Dodaj novog ucenika" />
                               <MenuItem mnemonicParsing="false" text="Dodaj ocjenu" />
@@ -236,6 +251,56 @@
                                  </font>
                               </Button>
                               <Label fx:id="addSubjectMsgLbl" layoutX="137.0" layoutY="214.0" prefHeight="40.0" prefWidth="250.0" />
+                           </children>
+                        </Pane>
+                        <Pane fx:id="showGradesPane" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label layoutX="179.0" layoutY="198.0" text="Tabela ocjena:">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <TableView fx:id="gradesTable" editable="true" layoutX="28.0" layoutY="235.0" prefHeight="200.0" prefWidth="450.0">
+                                <columns>
+                                  <TableColumn fx:id="tbGradesDate" prefWidth="99.0" text="Datum:" />
+                                  <TableColumn fx:id="tbGradesSubjectName" prefWidth="207.0" text="Predmet:" />
+                                   <TableColumn fx:id="tbGradesSubjectGrade" minWidth="0.0" prefWidth="142.0" text="Ocjena:" />
+                                </columns>
+                              </TableView>
+                              <Label layoutX="192.0" layoutY="43.0" text="Izaberite prikaz:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <RadioButton fx:id="rbtnAllGrades" layoutX="155.0" layoutY="71.0" mnemonicParsing="false" selected="true" text="Sve ocjene">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="tgGradesSort" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton fx:id="rbtnSortGradesByDate" layoutX="258.0" layoutY="71.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="110.0" text="Hronološki" toggleGroup="$tgGradesSort" />
+                              <Label layoutX="108.0" layoutY="107.0" text="Naziv predmeta:" />
+                              <TextField fx:id="subjectNameInput" layoutX="226.0" layoutY="103.0" />
+                              <Button fx:id="btnSubmitChoice" layoutX="202.0" layoutY="142.0" mnemonicParsing="false" text="Potvrdi izbor" />
+                           </children>
+                        </Pane>
+                        <Pane fx:id="showAbsencesPane" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <TableView fx:id="absencesTable" editable="true" layoutX="123.0" layoutY="193.0" prefHeight="200.0" prefWidth="277.0">
+                                <columns>
+                                  <TableColumn fx:id="tbAbsencesDate" prefWidth="134.0" text="Datum:" />
+                                  <TableColumn fx:id="tbAbsencesSubjectName" prefWidth="141.0" text="Predmet:" />
+                                </columns>
+                              </TableView>
+                              <Label layoutX="108.0" layoutY="80.0" text="Tabela izostanaka sa nastave:">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Pane fx:id="showRankProfessorPane" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label layoutX="185.0" layoutY="45.0" text="Ocijenite rad profesora:" />
                            </children>
                         </Pane>
                      </children>
