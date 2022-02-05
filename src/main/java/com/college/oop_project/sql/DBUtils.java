@@ -21,7 +21,11 @@ public class DBUtils {
         getProfessorsFromDB();
         getStudentsFromDB();
         getSubjectsFromDB();
+        getSchoolSubjectsFromDB();
+        getGradesFromDB();
         getQuestionsFromDB();
+        getAbsencesFromDB();
+
 
         dr.endConnection();
     }
@@ -39,7 +43,7 @@ public class DBUtils {
 
                 new AccessData(id, userName, mail, pw);
             }
-        } catch (SQLException err) {
+        } catch (Exception err) {
             err.printStackTrace();
         }
     }
@@ -50,14 +54,15 @@ public class DBUtils {
             ResultSet resultSet = statement.executeQuery("select * from skola");
 
             while (resultSet.next()) {
+                int id = resultSet.getInt("id");
                 String naziv = resultSet.getString("naziv");
                 String mjesto = resultSet.getString("mjesto");
                 String grad = resultSet.getString("grad");
                 String drzava = resultSet.getString("drzava");
 
-                new School(naziv, mjesto, grad, drzava);
+                new School(id, naziv, mjesto, grad, drzava);
             }
-        } catch (SQLException err) {
+        } catch (Exception err) {
             err.printStackTrace();
         }
     }
@@ -68,16 +73,14 @@ public class DBUtils {
             ResultSet resultSet = statement.executeQuery("select * from profesor");
 
             while (resultSet.next()) {
+                int id = resultSet.getInt("id");
                 String name = resultSet.getString("ime");
                 String surname = resultSet.getString("prezime");
                 int sexCode = resultSet.getInt("pol");
-                int dataID = resultSet.getInt("pristupni_podaci_id") - 1;
+                int dataID = resultSet.getInt("pristupni_podaci_id");
 
-                if (sexCode == 1) {
-                    new Professor(name, surname, "muski", dataID);
-                } else {
-                    new Professor(name, surname, "zenski", dataID);
-                }
+
+                new Professor(id, name, surname, sexCode, dataID);
             }
         } catch (SQLException err) {
             err.printStackTrace();
@@ -90,16 +93,13 @@ public class DBUtils {
             ResultSet resultSet = statement.executeQuery("select * from ucenik");
 
             while (resultSet.next()) {
+                int id = resultSet.getInt("id");
                 String name = resultSet.getString("ime");
                 String surname = resultSet.getString("prezime");
-                int sexCode = resultSet.getInt("pol");
-                int dataID = resultSet.getInt("pristupni_podaci_id") - 1;
+                int sexID = resultSet.getInt("pol");
+                int dataID = resultSet.getInt("pristupni_podaci_id");
 
-                if (sexCode == 1) {
-                    new Student(name, surname, "muski", dataID);
-                } else {
-                    new Student(name, surname, "zenski", dataID);
-                }
+                new Student(id, name, surname, sexID, dataID);
             }
         } catch (SQLException err) {
             err.printStackTrace();
@@ -112,9 +112,48 @@ public class DBUtils {
             ResultSet resultSet = statement.executeQuery("select * from predmet");
 
             while (resultSet.next()) {
-                new Subject(resultSet.getString("naziv"), resultSet.getInt("razred"));
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("naziv");
+                int grade = resultSet.getInt("razred");
+
+                new Subject(id, name, grade);
+            }
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+    }
+
+    private static void getSchoolSubjectsFromDB() {
+        try {
+            Statement statement = dr.getConn().createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from predmet_u_skoli");
+
+            while (resultSet.next()) {
+                int subjectID = resultSet.getInt("predmet_id");
+                int schoolID = resultSet.getInt("skola_id");
+                int professorID = resultSet.getInt("profesor_id");
+
+                new SchoolSubject(subjectID, schoolID, professorID);
             }
         } catch (SQLException err) {
+            err.printStackTrace();
+        }
+    }
+
+    private static void getGradesFromDB() {
+        try {
+            Statement statement = dr.getConn().createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from ocjena");
+
+            while (resultSet.next()) {
+                int studentID = resultSet.getInt("ucenik_id");
+                int schoolSubjectID = resultSet.getInt("predmet_u_skoli_id");
+                int grade = resultSet.getInt("ocjena");
+                String date = resultSet.getString("datum");
+
+                new Grade(studentID, schoolSubjectID, grade, date);
+            }
+        } catch (Exception err) {
             err.printStackTrace();
         }
     }
@@ -125,7 +164,27 @@ public class DBUtils {
             ResultSet resultSet = statement.executeQuery("select * from pitanje");
 
             while (resultSet.next()) {
-                new Question(resultSet.getString("pitanje"), "");
+                int id = resultSet.getInt("id");
+                String question = resultSet.getString("pitanje");
+
+                new Question(id, question);
+            }
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+    }
+
+    private static void getAbsencesFromDB() {
+        try {
+            Statement statement = dr.getConn().createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from izostanci");
+
+            while (resultSet.next()) {
+                int studentID = resultSet.getInt("ucenik_id");
+                int schoolSubjectID = resultSet.getInt("predmet_u_skoli_id");
+                String date = resultSet.getString("datum");
+
+                new Absences(studentID, schoolSubjectID, date);
             }
         } catch (SQLException err) {
             err.printStackTrace();
