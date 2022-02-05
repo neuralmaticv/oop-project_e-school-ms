@@ -1,7 +1,6 @@
 package com.college.oop_project.view;
 
 import com.college.oop_project.model.*;
-import com.college.oop_project.sql.DBUtils;
 
 import java.util.Scanner;
 
@@ -41,6 +40,9 @@ public class ConsoleView implements View {
         System.out.println(Student.allStudents);
         System.out.println(Student.allStudents.size());
 
+
+        System.out.println("-------------| OCJENE |-------------");
+        System.out.println(Grade.grades);
 
         System.out.println("=====================================================");
         System.out.println("\t\t\tSchool Management System\t\t\t");
