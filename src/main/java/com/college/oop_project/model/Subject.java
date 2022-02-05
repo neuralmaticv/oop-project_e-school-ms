@@ -3,21 +3,25 @@ package com.college.oop_project.model;
 import java.util.ArrayList;
 
 public class Subject {
+    private final int subjectID;
     private final String name;
-    private final int schoolGrade;
+    private SchoolGrade schoolGrade;
     public static ArrayList<Subject> subjects = new ArrayList<>();
 
-    public Subject(String name, int schoolGrade) {
+    public Subject(int subjectID, String name, int schoolGrade) throws Exception {
+        this.subjectID = subjectID;
         this.name = name;
-        this.schoolGrade = schoolGrade;
+        this.schoolGrade = SchoolGrade.fromInt(schoolGrade);
 
         if (!subjectExist(this)) {
             subjects.add(this);
         } else {
-            // TODO:
-            // Create exception
-            System.out.println("Predmet vec postoji");
+            throw new Exception("Predmet sa zadatim informacijama vec postoji u sistemu!");
         }
+    }
+
+    public static Subject getSubjectWithID(int id) {
+        return subjects.get(id - 1);
     }
 
     private boolean subjectExist(Subject subject) {
@@ -34,7 +38,7 @@ public class Subject {
         return name;
     }
 
-    public int getSchoolGrade() {
+    public SchoolGrade getSchoolGrade() {
         return schoolGrade;
     }
 

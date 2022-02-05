@@ -1,22 +1,32 @@
 package com.college.oop_project.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Professor {
+    private final int professorID;
     private final String firstName;
     private final String lastName;
-    private final String sex;
+    private final Sex sex;
     private final AccessData accessData;
+    public Set<School> schools = new HashSet<>();
+    public Set<Subject> subjects = new HashSet<>();
     public static ArrayList<Professor> allProfessors = new ArrayList<>();
 
-    public Professor(String firstName, String lastName, String sex, int dataID) {
+    public Professor(int professorID, String firstName, String lastName, int sexID, int dataID) {
+        this.professorID = professorID;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.sex = sex;
+        this.sex = Sex.fromInt(sexID);
         this.accessData = AccessData.getUser(dataID);
 
         allProfessors.add(this);
+    }
+
+    public static Professor getProfessorWithID(int id) {
+        return allProfessors.get(id - 1);
     }
 
     public String getFirstName() {
@@ -28,7 +38,7 @@ public class Professor {
     }
 
     public String getSex() {
-        return sex;
+        return sex.toString();
     }
 
     public AccessData getAccessData() {
@@ -43,24 +53,6 @@ public class Professor {
         }
 
         return null;
-    }
-
-    public void addNewSubject() {
-        String name;
-        int grade;
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter subject name:");
-        name = scanner.next();
-        System.out.println("Enter school grade:");
-        grade = scanner.nextInt();
-
-        // TODO:
-    }
-
-    public void changePassword() {
-        if (accessData.setNewPassword()) {
-            System.out.println("...");
-        }
     }
 
     @Override

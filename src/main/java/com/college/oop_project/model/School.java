@@ -3,13 +3,15 @@ package com.college.oop_project.model;
 import java.util.ArrayList;
 
 public class School {
+    private final int schoolID;
     private final String schoolName;
     private final String place;
     private final String city;
     private final String country;
     public static ArrayList<School> schools = new ArrayList<>();
 
-    public School(String schoolName, String place, String city, String country) {
+    public School(int schoolID, String schoolName, String place, String city, String country) throws Exception {
+        this.schoolID = schoolID;
         this.schoolName = schoolName;
         this.place = place;
         this.city = city;
@@ -18,10 +20,12 @@ public class School {
         if (!schoolExist(this)) {
             schools.add(this);
         } else {
-            // TODO:
-            // Create exception
-            System.out.println("Skola vec postoji");
+            throw new Exception("Škola sa zadatim informacijama vec postoji u sistemu!");
         }
+    }
+
+    public static School getSchoolWithID(int id) {
+        return schools.get(id - 1);
     }
 
     private boolean schoolExist(School school) {

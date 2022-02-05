@@ -3,22 +3,30 @@ package com.college.oop_project.model;
 import java.util.ArrayList;
 
 public class Student {
+    private final int studentID;
     private final String firstName;
     private final String lastName;
-    private final String sex;
+    private School school;
+    private SchoolGrade schoolGrade;
+    private final Sex sex;
     private final AccessData accessData;
     public ArrayList<SchoolSubject> listOfSubjects = new ArrayList<>();
     public ArrayList<Grade> listOfGrades = new ArrayList<>();
     public ArrayList<Absences> listOfAbsences = new ArrayList<>();
     public static ArrayList<Student> allStudents = new ArrayList<>();
 
-    public Student(String firstName, String lastName, String sex, int dataID) {
+    public Student(int studentID, String firstName, String lastName, int sexID, int dataID) {
+        this.studentID = studentID;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.sex = sex;
+        this.sex = Sex.fromInt(sexID);
         this.accessData = AccessData.getUser(dataID);
 
         allStudents.add(this);
+    }
+
+    public static Student getStudentWithID(int id) {
+        return allStudents.get(id - 1);
     }
 
     public String getFirstName() {
@@ -29,8 +37,24 @@ public class Student {
         return lastName;
     }
 
+    public School getSchool() {
+        return school;
+    }
+
+    public void setSchool(School school) {
+        this.school = school;
+    }
+
+    public String getSchoolGrade() {
+        return schoolGrade.toString();
+    }
+
+    public void setSchoolGrade(SchoolGrade grade) {
+        this.schoolGrade = grade;
+    }
+
     public String getSex() {
-        return sex;
+        return sex.toString();
     }
 
     public AccessData getAccessData() {
@@ -82,12 +106,6 @@ public class Student {
         // for each absences/grades, check IDs
     }
 
-    public void changePassword() {
-        if (accessData.setNewPassword()) {
-            System.out.println("...");
-        }
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -95,6 +113,7 @@ public class Student {
         sb.append("First name: ").append(this.firstName).append("\n");
         sb.append("Last name: ").append(this.lastName).append("\n");
         sb.append("Sex: ").append(this.sex).append("\n");
+        sb.append("Grade: ").append(this.schoolGrade).append("\n");
         sb.append("Username: ").append(this.accessData.getUserName()).append("\n");
         sb.append("Email: ").append(this.accessData.getUserMail()).append("\n");
         sb.append("Password: ").append(this.accessData.getUserPassword()).append("\n");

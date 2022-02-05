@@ -3,13 +3,14 @@ package com.college.oop_project.model;
 import java.util.ArrayList;
 
 public class Question {
+    private final int questionID;
     private final String question;
     private String answer;
     public static ArrayList<Question> questions = new ArrayList<>();
 
-    public Question(String question, String answer) {
+    public Question(int questionID, String question) {
+        this.questionID = questionID;
         this.question = question;
-        this.answer = answer;
 
         questions.add(this);
     }

@@ -10,17 +10,7 @@ public class AccessData {
     private String userPassword;
     public static ArrayList<AccessData> allAccessData = new ArrayList<>();
 
-    public static int checkUser(String username, String userpass) {
-        for (AccessData ad : allAccessData) {
-            if (ad.userName.equals(username) && ad.userPassword.equals(userpass)) {
-                return ad.userID - 1;
-            }
-        }
-
-        return -1;
-    }
-
-    public AccessData(int userID, String userName, String userMail, String userPassword) {
+    public AccessData(int userID, String userName, String userMail, String userPassword) throws Exception {
         this.userID = userID;
         this.userName = userName;
         this.userMail = userMail;
@@ -29,8 +19,7 @@ public class AccessData {
         if (!exists(this)) {
             allAccessData.add(this);
         } else {
-            // print msg, exception???
-            System.out.println("Postoji osoba sa ovakvim podacima");
+            throw new Exception("Postoji osoba sa zadatim podacima!");
         }
     }
 
@@ -63,35 +52,7 @@ public class AccessData {
     }
 
     public static AccessData getUser(int userID) {
-        return allAccessData.get(userID);
-    }
-
-    public boolean setNewPassword() {
-        // Only for testing
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter current password: ");
-        String userInput = scanner.next();
-
-        if (userInput.equals(userPassword)) {
-            System.out.println("Enter new password: ");
-            String newPassword = scanner.next();
-            System.out.println("Re-enter password: ");
-            String reePassword = scanner.next();
-
-            if (newPassword.equals(reePassword)) {
-                this.userPassword = reePassword;
-                System.out.println("Password has successfully changed");
-                // TODO:
-                // send mail
-                return true;
-            } else {
-                System.out.println("Passwords doesn't match!");
-                return false;
-            }
-        } else {
-            System.out.println("Try again");
-            return false;
-        }
+        return allAccessData.get(userID - 1);
     }
 
     @Override
