@@ -1,6 +1,8 @@
 package com.college.oop_project.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class Absences {
     private final Student student;
@@ -14,6 +16,7 @@ public class Absences {
         this.date = date;
 
         this.student.listOfAbsences.add(this);
+        this.student.listOfProfessors.put(this.schoolSubject.getProfessor(), new HashMap<>());
         allAbsences.add(this);
     }
 

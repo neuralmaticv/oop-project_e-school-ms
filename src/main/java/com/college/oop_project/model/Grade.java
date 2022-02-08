@@ -1,8 +1,9 @@
 package com.college.oop_project.model;
 
-import java.util.ArrayList;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class Grade {
+public class Grade implements Comparable<Grade> {
     private Student student;
     private SchoolSubject schoolSubject;
     private int grade;
@@ -22,6 +23,7 @@ public class Grade {
         this.student.setSchool(schoolSubject.getSchool());
         this.student.setSchoolGrade(schoolSubject.getSubject().getSchoolGrade());
         this.student.listOfGrades.add(this);
+        this.student.listOfProfessors.put(this.schoolSubject.getProfessor(), new HashMap<>());
 
         grades.add(this);
     }
@@ -64,5 +66,17 @@ public class Grade {
         sb.append("Grade: ").append(this.grade).append("\n");
 
         return sb.toString();
+    }
+
+    @Override
+    public int compareTo(Grade o) {
+        List<Integer> dl = Arrays.stream(date.split("-")).map(Integer::parseInt).collect(Collectors.toList());
+        List<Integer> oDL = Arrays.stream(o.date.split("-")).map(Integer::parseInt).collect(Collectors.toList());
+
+        if (dl.get(1) == oDL.get(1)) {
+            return Integer.compare(dl.get(2), oDL.get(2));
+        } else {
+            return Integer.compare(dl.get(1), oDL.get(1));
+        }
     }
 }

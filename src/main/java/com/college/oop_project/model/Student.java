@@ -1,6 +1,6 @@
 package com.college.oop_project.model;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Student {
     private final int studentID;
@@ -11,6 +11,7 @@ public class Student {
     private final Sex sex;
     private final AccessData accessData;
     public ArrayList<SchoolSubject> listOfSubjects = new ArrayList<>();
+    public Map<Professor, Map<Question, String>> listOfProfessors = new HashMap<>();
     public ArrayList<Grade> listOfGrades = new ArrayList<>();
     public ArrayList<Absences> listOfAbsences = new ArrayList<>();
     public static ArrayList<Student> allStudents = new ArrayList<>();
@@ -65,20 +66,16 @@ public class Student {
         return listOfSubjects;
     }
 
-    // TODO:
-    // sort grades by date and then return result
-    // return result should be Map (<subject:grade>)?
     public ArrayList<Grade> getListOfGrades() {
         return listOfGrades;
     }
 
-    public ArrayList<Grade> getGradesForSubject(SchoolSubject subject) {
+    public ArrayList<Grade> getListOfGradesForSubject(String subjectName) {
         ArrayList<Grade> list = new ArrayList<>();
 
-        for (Grade grade : listOfGrades) {
-            if (grade.getSubject() == subject.getSubject()) {
-                System.out.println(grade.getDate() + " -> " + subject.getSubject().getName() + " ->" + grade.getGrade());
-                list.add(grade);
+        for (Grade g : listOfGrades) {
+            if (g.getSubject().getName().equals(subjectName)) {
+                list.add(g);
             }
         }
 
@@ -99,11 +96,20 @@ public class Student {
         return null;
     }
 
-    public void setSubjectRank(SchoolSubject subject) {
-        // TODO:
-        // If student has absences or has at least one grade for specified subject then student
-        // has ability to give rate for that subject
-        // for each absences/grades, check IDs
+    public Map<Question, String> getQuestionsAndAnswersForProfessor(String fullName) {
+        Map<Question, String> list = new HashMap<>();
+
+        for (Map.Entry<Professor, Map<Question, String>> pq : this.listOfProfessors.entrySet()) {
+            if (pq.getKey().getFullName().equals(fullName) && !pq.getValue().isEmpty()) {
+                for (Map.Entry<Question, String> qs : pq.getValue().entrySet()) {
+                    if (!qs.getValue().isBlank()) {
+                        list.put(qs.getKey(), qs.getValue());
+                    }
+                }
+            }
+        }
+
+        return list;
     }
 
     @Override

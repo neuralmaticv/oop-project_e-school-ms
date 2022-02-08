@@ -1,18 +1,20 @@
 package com.college.oop_project.view;
 
 import com.college.oop_project.model.*;
+import com.college.oop_project.sql.DBUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.net.URL;
-import java.util.Properties;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class LoggedInController implements Initializable {
     @FXML
@@ -34,10 +36,8 @@ public class LoggedInController implements Initializable {
     private Pane addStudentPane;
     @FXML
     private TextField studentNameInputField, studentSurnameInputField, studentMailInputField;
-
-    // add sex option - dropdown button
-    // studentSexInputField
-
+    @FXML
+    private ChoiceBox<String> cboxSelectStudentSex;
     @FXML
     private Label addStudentMsgLbl;
     @FXML
@@ -51,10 +51,8 @@ public class LoggedInController implements Initializable {
     private Pane addProfessorPane;
     @FXML
     private TextField professorNameInputField, professorSurnameInputField, professorMailInputField;
-
-    // add sex option - dropdown button
-    // professorSexInputField
-
+    @FXML
+    private ChoiceBox<String> cboxSelectProfessorSex;
     @FXML
     private Label addProfessorMsgLbl;
     @FXML
@@ -110,9 +108,13 @@ public class LoggedInController implements Initializable {
     @FXML
     private Pane showGradesPane;
     @FXML
-    private RadioButton rbtnAllGrades, rbtnSortGradesByDate;
+    private RadioButton rbtnAllGrades, rbtnSortGradesForSubjectByDate;
+    @FXML
+    private ToggleGroup tgGradesSort;
     @FXML
     private TextField subjectNameInput;
+    @FXML
+    private Label subjectNameInputErrMsg;
     @FXML
     private Button btnSubmitChoice;
     @FXML
@@ -137,7 +139,26 @@ public class LoggedInController implements Initializable {
     // --------------------------------------------------
     @FXML
     private Pane showRankProfessorPane;
-
+    @FXML
+    private Text txtInfo;
+    @FXML
+    private ChoiceBox<String> cboxSelectProfessor;
+    @FXML
+    private Button btnSelectProfessor, btnSubmitAnswers;
+    @FXML
+    private Pane paneForQuestions;
+    @FXML
+    private Label lblQuestion1, lblQuestion2, lblQuestion3, lblQuestion4, rankedSuccessful;
+    @FXML
+    private RadioButton rbtnQ1A1, rbtnQ1A2, rbtnQ1A3, rbtnQ1A4, rbtnQ1A5;
+    @FXML
+    private RadioButton rbtnQ2A1, rbtnQ2A2, rbtnQ2A3, rbtnQ2A4, rbtnQ2A5;
+    @FXML
+    private RadioButton rbtnQ3A1, rbtnQ3A2, rbtnQ3A3, rbtnQ3A4, rbtnQ3A5;
+    @FXML
+    private RadioButton rbtnQ4A1, rbtnQ4A2, rbtnQ4A3, rbtnQ4A4, rbtnQ4A5;
+    @FXML
+    private ToggleGroup tgAnswerQ1, tgAnswerQ2, tgAnswerQ3, tgAnswerQ4;
 
 
     // --------------------------------------------------
@@ -151,9 +172,9 @@ public class LoggedInController implements Initializable {
     private MenuItem miShowGrades, miShowAbsences, miShowRankProfessor, miShowAddNewProfessor, miShowAddNewSubject, miShowAddNewSchool;
 
 
-
     private Student s;
     private Professor p;
+
     // --------------------------------------------------
     // Methods
     // --------------------------------------------------
@@ -175,7 +196,6 @@ public class LoggedInController implements Initializable {
             }
         });
     }
-
 
     public void setStudentInfo(Student user) {
         s = user;
@@ -199,6 +219,7 @@ public class LoggedInController implements Initializable {
     }
 
     public void setProfessorInfo(Professor user) {
+        p = user;
         firstName.setText(user.getFirstName());
         lastName.setText(user.getLastName());
         email.setText(user.getAccessData().getUserMail());
@@ -209,7 +230,7 @@ public class LoggedInController implements Initializable {
         schoolList.setVisible(true);
 
         StringBuilder sb = new StringBuilder();
-        for (School s: user.schools) {
+        for (School s : user.schools) {
             sb.append("OŠ \"").append(s.getSchoolName()).append("\"").append(" - ").append(s.getPlace()).append("\n");
         }
         schoolList.setText(sb.toString());
@@ -218,7 +239,7 @@ public class LoggedInController implements Initializable {
 
         subjectLabel.setVisible(true);
         subjectList.setVisible(true);
-        for (Subject s: user.subjects) {
+        for (Subject s : user.subjects) {
             sb.append(s.getName()).append(" - ").append(s.getSchoolGrade()).append("\n");
         }
         subjectList.setText(sb.toString());
@@ -232,14 +253,52 @@ public class LoggedInController implements Initializable {
     public void showGradesPane() {
         hideVisiblePane();
         showGradesPane.setVisible(true);
+        tgGradesSort.selectToggle(rbtnAllGrades);
 
         tbGradesDate.setCellValueFactory(new PropertyValueFactory("date"));
         tbGradesSubjectName.setCellValueFactory(new PropertyValueFactory("subjectName"));
         tbGradesSubjectGrade.setCellValueFactory(new PropertyValueFactory("subjectGrade"));
 
-        for (Grade g : s.listOfGrades) {
-            gradesTable.getItems().add(g);
+        handleUserInputForStudentGrades();
+    }
+
+    private void handleUserInputForStudentGrades() {
+        gradesTable.getItems().clear();
+        subjectNameInput.setText("");
+        subjectNameInputErrMsg.setVisible(false);
+
+        if (rbtnAllGrades.isSelected()) {
+            Collections.sort(s.listOfGrades);
+            for (Grade g : s.listOfGrades) {
+                gradesTable.getItems().add(g);
+            }
         }
+
+        btnSubmitChoice.setOnAction(event -> {
+            subjectNameInputErrMsg.setVisible(false);
+            gradesTable.getItems().clear();
+
+            if (rbtnSortGradesForSubjectByDate.isSelected() && !subjectNameInput.getText().isBlank()) {
+                String subjectName = subjectNameInput.getText();
+
+                ArrayList<Grade> listOfGrades = s.getListOfGradesForSubject(subjectName);
+                for (Grade g : listOfGrades) {
+                    if (g.getSubject().getName().equals(subjectName)) {
+                        gradesTable.getItems().add(g);
+                    }
+                }
+
+                if (listOfGrades.isEmpty()) {
+                    subjectNameInput.setText("");
+                    subjectNameInputErrMsg.setVisible(true);
+                    subjectNameInputErrMsg.setText("Pogrešan unos ili učenik nema ocjena iz datog predmeta.");
+                }
+            } else if (rbtnSortGradesForSubjectByDate.isSelected() && subjectNameInput.getText().isBlank()) {
+                subjectNameInputErrMsg.setVisible(true);
+                subjectNameInputErrMsg.setTextFill(Color.RED);
+                subjectNameInputErrMsg.setText("Unesite naziv predmeta!");
+            }
+        });
     }
 
     public void showAbsencesPane() {
@@ -249,6 +308,7 @@ public class LoggedInController implements Initializable {
         tbAbsencesDate.setCellValueFactory(new PropertyValueFactory("date"));
         tbAbsencesSubjectName.setCellValueFactory(new PropertyValueFactory("subjectName"));
 
+        absencesTable.getItems().clear();
         for (Absences a : s.listOfAbsences) {
             absencesTable.getItems().add(a);
         }
@@ -257,11 +317,128 @@ public class LoggedInController implements Initializable {
     public void showRankProfessorPane() {
         hideVisiblePane();
         showRankProfessorPane.setVisible(true);
+
+        ArrayList<Label> lblQuestions = new ArrayList<>();
+        Collections.addAll(lblQuestions, lblQuestion1, lblQuestion2, lblQuestion3, lblQuestion4);
+        List<RadioButton> allRadioBtns = Arrays.asList(
+                rbtnQ1A1, rbtnQ1A2, rbtnQ1A3, rbtnQ1A4, rbtnQ1A5,
+                rbtnQ2A1, rbtnQ2A2, rbtnQ2A3, rbtnQ2A4, rbtnQ2A5,
+                rbtnQ3A1, rbtnQ3A2, rbtnQ3A3, rbtnQ3A4, rbtnQ3A5,
+                rbtnQ4A1, rbtnQ4A2, rbtnQ4A3, rbtnQ4A4, rbtnQ4A5);
+
+        paneForQuestions.setVisible(false);
+        cboxSelectProfessor.getItems().clear();
+        setAllPossibleOptions();
+
+
+        btnSelectProfessor.setOnAction(event -> {
+            String professorFullName = cboxSelectProfessor.getSelectionModel().getSelectedItem();
+            paneForQuestions.setVisible(true);
+            rankedSuccessful.setVisible(false);
+            displayQuestions(lblQuestions);
+
+            if (!s.getQuestionsAndAnswersForProfessor(professorFullName).isEmpty()) {
+                unselectOrHideRbtns(false, allRadioBtns);
+                btnSubmitAnswers.setVisible(false);
+                txtInfo.setText("Već ste ocjenili izabranog profesora:");
+                txtInfo.setFill(Color.BLUE);
+                Map<Question, String> QA = s.getQuestionsAndAnswersForProfessor(professorFullName);
+
+                int i = 0;
+                for (Map.Entry<Question, String> qs : QA.entrySet()) {
+                    lblQuestions.get(i).setText(qs.getKey().getQuestion() + " | odgovor: " + qs.getValue());
+                    i++;
+                }
+            } else {
+                txtInfo.setText("Potrebno je odgovoriti na svako ponuđeno pitanje.\n" +
+                        "1 - najgora ocjena, 5 - najbolja ocjena");
+                txtInfo.setFill(Color.DARKRED);
+                unselectOrHideRbtns(true, allRadioBtns);
+                btnSubmitAnswers.setVisible(true);
+
+                btnSubmitAnswers.setOnAction(e -> {
+                    ArrayList<String> answers = new ArrayList<>();
+                    answers.add(((RadioButton) tgAnswerQ1.getSelectedToggle()).getText());
+                    answers.add(((RadioButton) tgAnswerQ2.getSelectedToggle()).getText());
+                    answers.add(((RadioButton) tgAnswerQ3.getSelectedToggle()).getText());
+                    answers.add(((RadioButton) tgAnswerQ4.getSelectedToggle()).getText());
+
+                    for (Map.Entry<Professor, Map<Question, String>> pq : s.listOfProfessors.entrySet()) {
+                        if (pq.getKey().getFullName().equals(professorFullName)) {
+                            for (int i = 0; i < 4; i++) {
+                                pq.getValue().put(Question.questions.get(i), answers.get(i));
+                            }
+                        }
+                    }
+
+                    paneForQuestions.setVisible(false);
+                    rankedSuccessful.setVisible(true);
+                    rankedSuccessful.setText("Ocijenili ste profesora!");
+                });
+            }
+        });
+    }
+
+    private void setAllPossibleOptions() {
+        for (Professor p : s.listOfProfessors.keySet()) {
+            cboxSelectProfessor.getItems().add(p.getFullName());
+        }
+    }
+
+    private void displayQuestions(ArrayList<Label> lblQuestions) {
+        for (int i = 0; i < lblQuestions.size(); i++) {
+            lblQuestions.get(i).setText(Question.getQuestionText(i));
+        }
+    }
+
+    private void unselectOrHideRbtns(boolean flag, List<RadioButton> rbtns) {
+        for (RadioButton rb : rbtns) {
+            if (flag) {
+                rb.setVisible(true);
+
+                if (rb.isSelected()) {
+                    rb.setSelected(false);
+                }
+            } else {
+                rb.setVisible(false);
+            }
+        }
     }
 
     public void showAddStudentPane() {
         hideVisiblePane();
         addStudentPane.setVisible(true);
+        cboxSelectStudentSex.getItems().add("Ženski");
+        cboxSelectStudentSex.getItems().add("Muški");
+
+
+        String name = studentNameInputField.getText();
+        String surname = studentSurnameInputField.getText();
+        String mail = studentMailInputField.getText();
+        String sex = cboxSelectStudentSex.getSelectionModel().getSelectedItem();
+        int sexID;
+        if (sex.equals("Ženski")) {
+            sexID = 0;
+        } else if (sex.equals("Muški")) {
+            sexID = 1;
+        }
+
+        addStudentBtn.setOnAction(event -> {
+            addStudentMsgLbl.setVisible(false);
+            addStudentMsgLbl.setText("");
+
+            if (!name.isBlank() && !surname.isBlank() && !mail.isBlank() && !sex.isBlank()) {
+                //int accessDataID = ;
+
+                addStudentMsgLbl.setText("Dodali ste novog učenika.");
+            } else {
+                addStudentMsgLbl.setVisible(true);
+                addStudentMsgLbl.setText("Molimo Vas da unesete sve potrebne podatke");
+            }
+        });
+
+
+
     }
 
     public void showAddProfessorPane() {

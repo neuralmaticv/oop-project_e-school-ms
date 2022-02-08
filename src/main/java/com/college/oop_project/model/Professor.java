@@ -37,6 +37,10 @@ public class Professor {
         return lastName;
     }
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     public String getSex() {
         return sex.toString();
     }

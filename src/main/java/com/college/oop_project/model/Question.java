@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Question {
     private final int questionID;
     private final String question;
-    private String answer;
     public static ArrayList<Question> questions = new ArrayList<>();
 
     public Question(int questionID, String question) {
@@ -15,18 +14,18 @@ public class Question {
         questions.add(this);
     }
 
-    public static Question getQuestion(int index) {
-        return questions.get(index);
+    public static String getQuestionText(int index) {
+        return questions.get(index).question;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public String getQuestion() {
+        return question;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(this.question).append(" | Odgovor: ").append(this.answer);
+        sb.append(this.question);
 
         return sb.toString();
     }
