@@ -1,7 +1,6 @@
 package com.college.oop_project.model;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class AccessData {
     private final int userID;

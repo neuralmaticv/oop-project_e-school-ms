@@ -1,6 +1,9 @@
 package com.college.oop_project.model;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Grade implements Comparable<Grade> {

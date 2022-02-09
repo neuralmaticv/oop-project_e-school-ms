@@ -25,7 +25,13 @@ public class School {
     }
 
     public static School getSchoolWithID(int id) {
-        return schools.get(id - 1);
+        for (School s: schools) {
+            if (s.getSchoolID() == id) {
+                return s;
+            }
+        }
+
+        return null;
     }
 
     private boolean schoolExist(School school) {
@@ -55,12 +61,26 @@ public class School {
         return country;
     }
 
+    public int getSchoolID() {
+        return schoolID;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Naziv: ").append("\"").append(this.schoolName).append("\", ");
+        sb.append("\"").append(this.schoolName).append("\", ");
         sb.append(this.place).append(", ").append(this.city).append(", ").append(this.country);
 
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        School school = (School) o;
+
+        return this.schoolName.equals(school.schoolName) && this.place.equals(school.place);
     }
 }

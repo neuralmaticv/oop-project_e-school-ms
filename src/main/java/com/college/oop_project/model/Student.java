@@ -1,6 +1,8 @@
 package com.college.oop_project.model;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Student {
     private final int studentID;
@@ -46,12 +48,15 @@ public class Student {
         this.school = school;
     }
 
-    public String getSchoolGrade() {
-        return schoolGrade.toString();
+    public SchoolGrade getSchoolGrade() {
+        return schoolGrade;
     }
 
     public void setSchoolGrade(SchoolGrade grade) {
         this.schoolGrade = grade;
+    }
+    public void setSchoolGrade(int grade) {
+        this.schoolGrade = SchoolGrade.fromInt(grade);
     }
 
     public String getSex() {
@@ -68,6 +73,10 @@ public class Student {
 
     public ArrayList<Grade> getListOfGrades() {
         return listOfGrades;
+    }
+
+    public int getStudentID() {
+        return studentID;
     }
 
     public ArrayList<Grade> getListOfGradesForSubject(String subjectName) {
@@ -115,14 +124,7 @@ public class Student {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Info about student:").append("\n");
-        sb.append("First name: ").append(this.firstName).append("\n");
-        sb.append("Last name: ").append(this.lastName).append("\n");
-        sb.append("Sex: ").append(this.sex).append("\n");
-        sb.append("Grade: ").append(this.schoolGrade).append("\n");
-        sb.append("Username: ").append(this.accessData.getUserName()).append("\n");
-        sb.append("Email: ").append(this.accessData.getUserMail()).append("\n");
-        sb.append("Password: ").append(this.accessData.getUserPassword()).append("\n");
+        sb.append(this.firstName).append(" ").append(this.lastName);
 
         return sb.toString();
     }

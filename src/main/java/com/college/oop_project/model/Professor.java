@@ -1,8 +1,8 @@
 package com.college.oop_project.model;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class Professor {
@@ -11,8 +11,9 @@ public class Professor {
     private final String lastName;
     private final Sex sex;
     private final AccessData accessData;
-    public Set<School> schools = new HashSet<>();
-    public Set<Subject> subjects = new HashSet<>();
+    //public Set<School> schools = new HashSet<>();
+    //public Set<Subject> subjects = new HashSet<>();
+    public Map<School, Set<Subject>> schoolAndSubjects = new HashMap<>();
     public static ArrayList<Professor> allProfessors = new ArrayList<>();
 
     public Professor(int professorID, String firstName, String lastName, int sexID, int dataID) {
@@ -59,6 +60,10 @@ public class Professor {
         return null;
     }
 
+    public int getProfessorID() {
+        return professorID;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -71,5 +76,17 @@ public class Professor {
         sb.append("Password: ").append(this.accessData.getUserPassword()).append("\n");
 
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Professor professor = (Professor) o;
+
+        if (firstName != null ? !firstName.equals(professor.firstName) : professor.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(professor.lastName) : professor.lastName != null) return false;
+        return sex == professor.sex;
     }
 }

@@ -42,12 +42,26 @@ public class Subject {
         return schoolGrade;
     }
 
+    public int getSubjectID() {
+        return subjectID;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Predmet: ").append(this.name);
-        sb.append(" za ").append(this.schoolGrade).append(" razred");
+        sb.append(this.name).append(" za ").append(this.schoolGrade).append(" razred");
 
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Subject subject = (Subject) o;
+
+        return this.name.equals(subject.name) && this.schoolGrade == subject.schoolGrade;
+    }
+
 }
