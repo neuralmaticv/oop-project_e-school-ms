@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -61,6 +62,7 @@
                                     <items>
                                         <MenuItem fx:id="miShowGrades" mnemonicParsing="false" onAction="#showGradesPane" text="Prikaži ocjene" visible="false" />
                                         <MenuItem fx:id="miShowAddNewSchool" mnemonicParsing="false" onAction="#showAddSchoolPane" text="Dodaj novu skolu" />
+                              <MenuItem fx:id="miShowAddNewGradeAbsence" mnemonicParsing="false" onAction="#showAddGradeOrAbsence" text="Dodaj ocjenu ili izostanak" />
                                     </items>
                                 </Menu>
                                 <Menu fx:id="menu2" mnemonicParsing="false" style="-fx-font-weight: bold;" text="Predmet">
@@ -73,6 +75,7 @@
                                     <items>
                                         <MenuItem fx:id="miShowRankProfessor" mnemonicParsing="false" onAction="#showRankProfessorPane" text="Ocijeni rad profesora" visible="false" />
                                         <MenuItem fx:id="miShowAddNewProfessor" mnemonicParsing="false" onAction="#showAddProfessorPane" text="Dodaj novog profesora" />
+                              <MenuItem fx:id="miShowAddSchoolSubject" mnemonicParsing="false" onAction="#showAddSchoolSubjectPane" text="Dodaj školu i predmet" />
                                     </items>
                                 </Menu>
                                 <Menu fx:id="menu4" mnemonicParsing="false" style="-fx-font-weight: bold;" text="Ucenik">
@@ -88,7 +91,7 @@
                     <center>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
                             <children>
-                                <Pane fx:id="mainPane" prefHeight="468.0" prefWidth="523.0" AnchorPane.bottomAnchor="0.8000000000000114" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <Pane fx:id="mainPane" prefHeight="468.0" prefWidth="523.0" visible="false" AnchorPane.bottomAnchor="0.8000000000000114" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
                                         <Label layoutX="196.0" layoutY="85.0" style="-fx-font-weight: bold;" text="eDnevnik">
                                             <font>
@@ -362,6 +365,66 @@
                               <Label fx:id="rankedSuccessful" alignment="CENTER" layoutX="126.0" layoutY="227.0" prefHeight="16.0" prefWidth="250.0" text="Label" visible="false" />
                                     </children>
                                 </Pane>
+                        <Pane fx:id="showAddSchoolSubjectPane" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <ChoiceBox fx:id="cboxSelectSchool" layoutX="201.0" layoutY="127.0" prefHeight="24.0" prefWidth="182.0" />
+                              <Label layoutX="140.0" layoutY="54.0" text="Dodavanje škole i predmeta:">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <ChoiceBox fx:id="cboxSelectSubject" layoutX="201.0" layoutY="182.0" prefHeight="24.0" prefWidth="182.0" />
+                              <Label layoutX="126.0" layoutY="131.0" text="Škola:">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="115.0" layoutY="186.0" text="Predmet:">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="btnSaveSchoolSubject" layoutX="231.0" layoutY="246.0" mnemonicParsing="false" text="Potvrdi" />
+                              <Label fx:id="addSchoolSubjectMsgLbl" alignment="CENTER" layoutX="148.0" layoutY="219.0" prefHeight="16.0" prefWidth="230.0" />
+                           </children>
+                        </Pane>
+                        <Pane fx:id="showAddGradeOrAbsencePane" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label layoutX="157.0" layoutY="14.0" text="Upis ocjene ili izostanka:">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="145.0" layoutY="189.0" text="Učenik:">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <ChoiceBox fx:id="cboxSelectStudent" layoutX="216.0" layoutY="185.0" prefWidth="150.0" />
+                              <Button fx:id="btnSubmitGradOrAbsence" layoutX="230.0" layoutY="360.0" mnemonicParsing="false" text="Potvrdi" />
+                              <RadioButton fx:id="rbtnGrade" layoutX="145.0" layoutY="235.0" mnemonicParsing="false" text="Ocjena">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="tgGradeAbsence" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton fx:id="rbtnAbsence" layoutX="291.0" layoutY="235.0" mnemonicParsing="false" text="Izostanak" toggleGroup="$tgGradeAbsence" />
+                              <TextField fx:id="addGradeInputField" layoutX="177.0" layoutY="270.0" visible="false" />
+                              <Label fx:id="addGradeAbsenceMsgLbl" alignment="CENTER" layoutX="145.0" layoutY="311.0" prefHeight="16.0" prefWidth="235.0" visible="false" />
+                              <Label layoutX="132.0" layoutY="141.0" text="Predmet:">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <ChoiceBox fx:id="cboxSelectProfSubject" layoutX="216.0" layoutY="137.0" prefWidth="150.0" />
+                              <Label layoutX="149.0" layoutY="93.0" text="Škola:">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <ChoiceBox fx:id="cboxSelectProfSchool" layoutX="216.0" layoutY="89.0" prefWidth="150.0" />
+                              <DatePicker fx:id="gradeAbsenceDateInput" layoutX="164.0" layoutY="315.0" />
+                           </children>
+                        </Pane>
                             </children>
                         </AnchorPane>
                     </center>
