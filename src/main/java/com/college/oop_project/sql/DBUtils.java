@@ -5,10 +5,7 @@ import com.college.oop_project.model.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class DBUtils {
     private static final Driver dr = new Driver();
@@ -129,11 +126,12 @@ public class DBUtils {
             ResultSet resultSet = statement.executeQuery("select * from predmet_u_skoli");
 
             while (resultSet.next()) {
+                int id = resultSet.getInt("id");
                 int subjectID = resultSet.getInt("predmet_id");
                 int schoolID = resultSet.getInt("skola_id");
                 int professorID = resultSet.getInt("profesor_id");
 
-                new SchoolSubject(subjectID, schoolID, professorID);
+                new SchoolSubject(id, subjectID, schoolID, professorID);
             }
         } catch (SQLException err) {
             err.printStackTrace();
@@ -191,19 +189,34 @@ public class DBUtils {
         }
     }
 
+
+
+
+
+
+
+
+
+
+
     public static void addSchoolToDB(String name, String place, String city, String country) {
         dr.startConnection();
 
         try {
             String query = "INSERT INTO skola(naziv, grad, mjesto, drzava) VALUES (?,?,?,?)";
-            PreparedStatement statement = dr.getConn().prepareStatement(query);
+            PreparedStatement statement = dr.getConn().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, name);
             statement.setString(2, city);
             statement.setString(3, place);
             statement.setString(4, country);
-
             statement.executeUpdate();
-        } catch (SQLException e) {
+
+            ResultSet rs = statement.getGeneratedKeys();
+            rs.next();
+            int newID = rs.getInt(1);
+
+            new School(newID, name, place, city, country);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -212,25 +225,24 @@ public class DBUtils {
 
     public static int addAccessDataToDB(String username, String mail, String password) {
         dr.startConnection();
-        int newID = -1;
+        int newID = 0;
+
         try {
             String query = "INSERT INTO pristupni_podaci(korisnicko_ime, email, sifra)  VALUES (?,?,?)";
             PreparedStatement statement = dr.getConn().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setString(1, username);
             statement.setString(2, mail);
             statement.setString(3, getHashValue(password));
-
             statement.executeUpdate();
 
             ResultSet rs = statement.getGeneratedKeys();
-            if (rs.next()) {
-                newID = rs.getInt(1);
-            }
+            rs.next();
+            newID = rs.getInt(1);
+
             new AccessData(newID, username, mail, getHashValue(password));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         dr.endConnection();
         return newID;
@@ -241,13 +253,18 @@ public class DBUtils {
 
         try {
             String query = "INSERT INTO profesor(ime, prezime, pol, pristupni_podaci_id) VALUES (?,?,?,?)";
-            PreparedStatement statement = dr.getConn().prepareStatement(query);
+            PreparedStatement statement = dr.getConn().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setString(1, firstName);
             statement.setString(2, lastName);
             statement.setInt(3, sex);
             statement.setInt(4, id);
-
             statement.executeUpdate();
+
+            ResultSet rs = statement.getGeneratedKeys();
+            rs.next();
+            int newID = rs.getInt(1);
+
+            new Professor(newID, firstName, lastName, sex, id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -260,13 +277,18 @@ public class DBUtils {
 
         try {
             String query = "INSERT INTO ucenik(ime, prezime, pol, pristupni_podaci_id)  VALUES (?,?,?,?)";
-            PreparedStatement statement = dr.getConn().prepareStatement(query);
+            PreparedStatement statement = dr.getConn().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setString(1, firstName);
             statement.setString(2, lastName);
             statement.setInt(3, sex);
             statement.setInt(4, id);
-
             statement.executeUpdate();
+
+            ResultSet rs = statement.getGeneratedKeys();
+            rs.next();
+            int newID = rs.getInt(1);
+
+            new Student(newID, firstName, lastName, sex, id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -279,12 +301,79 @@ public class DBUtils {
 
         try {
             String query = "INSERT INTO predmet(naziv, razred) VALUES (?,?)";
-            PreparedStatement statement = dr.getConn().prepareStatement(query);
+            PreparedStatement statement = dr.getConn().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setString(1, name);
             statement.setInt(2, grade);
-
             statement.executeUpdate();
-        } catch (SQLException e) {
+
+            ResultSet rs = statement.getGeneratedKeys();
+            rs.next();
+            int newID = rs.getInt(1);
+
+            new Subject(newID, name, grade);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        dr.endConnection();
+    }
+
+    public static void addSchoolSubjectToDB(int subjectID, int schoolID, int professorID) {
+        dr.startConnection();
+
+        try {
+            String query = "INSERT INTO predmet_u_skoli(predmet_id, skola_id, profesor_id) VALUES (?,?,?)";
+            PreparedStatement statement = dr.getConn().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, subjectID);
+            statement.setInt(2, schoolID);
+            statement.setInt(3, professorID);
+            statement.executeUpdate();
+
+            ResultSet rs = statement.getGeneratedKeys();
+            rs.next();
+            int newID = rs.getInt(1);
+
+            new SchoolSubject(newID, subjectID, schoolID, professorID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        dr.endConnection();
+    }
+
+    public static void addAbsenceToDB(int studentID, int schoolSubjectID, String date) {
+        dr.startConnection();
+
+        try {
+            String query = "INSERT INTO izostanci(ucenik_id, predmet_u_skoli_id, datum) VALUES (?,?,?)";
+            PreparedStatement statement = dr.getConn().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, studentID);
+            statement.setInt(2, schoolSubjectID);
+            statement.setDate(3, Date.valueOf(date));
+            statement.executeUpdate();
+
+            new Absences(studentID, schoolSubjectID, date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        dr.endConnection();
+    }
+
+    public static void addGradeToDB(int studentID, int schoolSubjectID, int grade, String date) {
+        dr.startConnection();
+
+        try {
+            String query = "INSERT INTO ocjena(ucenik_id, predmet_u_skoli_id, ocjena, datum) VALUES (?,?,?,?)";
+            PreparedStatement statement = dr.getConn().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, studentID);
+            statement.setInt(2, schoolSubjectID);
+            statement.setInt(2, grade);
+            statement.setDate(4, Date.valueOf(date));
+            statement.executeUpdate();
+
+            new Grade(studentID, schoolSubjectID, grade, date);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
