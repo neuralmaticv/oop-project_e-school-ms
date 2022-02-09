@@ -210,6 +210,32 @@ public class DBUtils {
         dr.endConnection();
     }
 
+    public static int addAccessDataToDB(String username, String mail, String password) {
+        dr.startConnection();
+        int newID = -1;
+        try {
+            String query = "INSERT INTO pristupni_podaci(korisnicko_ime, email, sifra)  VALUES (?,?,?)";
+            PreparedStatement statement = dr.getConn().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+            statement.setString(1, username);
+            statement.setString(2, mail);
+            statement.setString(3, getHashValue(password));
+
+            statement.executeUpdate();
+
+            ResultSet rs = statement.getGeneratedKeys();
+            if (rs.next()) {
+                newID = rs.getInt(1);
+            }
+            new AccessData(newID, username, mail, getHashValue(password));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        dr.endConnection();
+        return newID;
+    }
+
     public static void addProfessorToDB(String firstName, String lastName, int sex, int id) {
         dr.startConnection();
 
@@ -233,7 +259,7 @@ public class DBUtils {
         dr.startConnection();
 
         try {
-            String query = "INSERT INTO ucenik(ime, prezime, pol, pristupni_podaci_id) VALUES (?,?,?,?)";
+            String query = "INSERT INTO ucenik(ime, prezime, pol, pristupni_podaci_id)  VALUES (?,?,?,?)";
             PreparedStatement statement = dr.getConn().prepareStatement(query);
             statement.setString(1, firstName);
             statement.setString(2, lastName);

@@ -52,7 +52,13 @@ public class AccessData {
     }
 
     public static AccessData getUser(int userID) {
-        return allAccessData.get(userID - 1);
+        for (AccessData ad : allAccessData) {
+            if (ad.userID == userID) {
+                return ad;
+            }
+        }
+
+        return null;
     }
 
     @Override
