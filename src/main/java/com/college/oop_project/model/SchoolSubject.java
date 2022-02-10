@@ -9,7 +9,7 @@ public class SchoolSubject {
     private final Subject subject;
     private final School school;
     private final Professor professor;
-    public static ArrayList<SchoolSubject> schoolSubjects = new ArrayList<>();
+    public static Set<SchoolSubject> schoolSubjects = new HashSet<>();
 
     public SchoolSubject(int id, int subjectID, int schoolID, int professorID) {
         this.schoolSubjectID = id;
@@ -75,5 +75,20 @@ public class SchoolSubject {
         }
 
         return list;
+    }
+
+    @Override
+    public String toString() {
+        return this.professor.getFullName() + " za predmet " + this.subject.getName() + " " + this.subject.getSchoolGrade();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SchoolSubject that = (SchoolSubject) o;
+
+        return this.getSubject().equals(that.subject) && this.professor.equals(that.professor);
     }
 }

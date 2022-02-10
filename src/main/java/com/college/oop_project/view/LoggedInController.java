@@ -174,7 +174,7 @@ public class LoggedInController implements Initializable {
     @FXML
     private Text txtInfo;
     @FXML
-    private ChoiceBox<String> cboxSelectProfessor;
+    private ChoiceBox<SchoolSubject> cboxSelectProfessor;
     @FXML
     private Button btnSelectProfessor, btnSubmitAnswers;
     @FXML
@@ -376,22 +376,24 @@ public class LoggedInController implements Initializable {
 
 
         btnSelectProfessor.setOnAction(event -> {
-            String professorFullName = cboxSelectProfessor.getSelectionModel().getSelectedItem();
+            SchoolSubject schoolSubject = cboxSelectProfessor.getSelectionModel().getSelectedItem();
             paneForQuestions.setVisible(true);
             rankedSuccessful.setVisible(false);
             displayQuestions(lblQuestions);
 
-            if (!studentUser.getQuestionsAndAnswersForProfessor(professorFullName).isEmpty()) {
+            if (!studentUser.hasAtLeastOneGrade(schoolSubject.getSubject()) && !studentUser.hasAtLeastOneAbsence(schoolSubject.getSubject())) {
+                btnSubmitAnswers.setVisible(false);
+                txtInfo.setText("Morate imati minimalno jednu ocjenu ili izostanak.");
+                txtInfo.setFill(Color.RED);
+            } else if (!SubjectRank.getSubjectRank(schoolSubject, studentUser).isEmpty()) {
                 unselectOrHideRbtns(false, allRadioBtns);
                 btnSubmitAnswers.setVisible(false);
                 txtInfo.setText("Već ste ocjenili izabranog profesora:");
                 txtInfo.setFill(Color.BLUE);
-                Map<Question, String> QA = studentUser.getQuestionsAndAnswersForProfessor(professorFullName);
 
-                int i = 0;
-                for (Map.Entry<Question, String> qs : QA.entrySet()) {
-                    lblQuestions.get(i).setText(qs.getKey().getQuestion() + " | odgovor: " + qs.getValue());
-                    i++;
+                ArrayList<SubjectRank> list = SubjectRank.getSubjectRank(schoolSubject, studentUser);
+                for (int i = 0; i < list.size(); i++) {
+                    lblQuestions.get(i).setText(list.get(i).getQuestion() + " | odgovor: " + list.get(i).getGrade());
                 }
             } else {
                 txtInfo.setText("Potrebno je odgovoriti na svako ponuđeno pitanje.\n" +
@@ -407,12 +409,8 @@ public class LoggedInController implements Initializable {
                     answers.add(((RadioButton) tgAnswerQ3.getSelectedToggle()).getText());
                     answers.add(((RadioButton) tgAnswerQ4.getSelectedToggle()).getText());
 
-                    for (Map.Entry<Professor, Map<Question, String>> pq : studentUser.listOfProfessors.entrySet()) {
-                        if (pq.getKey().getFullName().equals(professorFullName)) {
-                            for (int i = 0; i < 4; i++) {
-                                pq.getValue().put(Question.questions.get(i), answers.get(i));
-                            }
-                        }
+                    for (int i = 0; i < 4; i++) {
+                        DBUtils.addSubjectRankToDB(schoolSubject.getSchoolSubjectID(), studentUser.getStudentID(), Question.questions.get(i).getQuestionID(), Integer.parseInt(answers.get(i)));
                     }
 
                     paneForQuestions.setVisible(false);
@@ -424,8 +422,10 @@ public class LoggedInController implements Initializable {
     }
 
     private void setAllPossibleOptions() {
-        for (Professor p : studentUser.listOfProfessors.keySet()) {
-            cboxSelectProfessor.getItems().add(p.getFullName());
+        for (SchoolSubject sc : SchoolSubject.schoolSubjects) {
+            if (studentUser.isInListOfSubjects(sc)) {
+                cboxSelectProfessor.getItems().add(sc);
+            }
         }
     }
 
@@ -900,7 +900,6 @@ public class LoggedInController implements Initializable {
         String port = "587";
         String fromMail = "vladocodes@gmail.com";
         String appPassword = System.getenv("$EDNEVNIK_PW");
-
 
         Properties properties = System.getProperties();
         properties.put("mail.smtp.host", host);

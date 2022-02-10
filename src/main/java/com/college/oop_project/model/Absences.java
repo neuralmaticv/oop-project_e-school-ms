@@ -16,7 +16,9 @@ public class Absences {
         this.date = LocalDate.parse(date);
 
         this.student.listOfAbsences.add(this);
-        this.student.listOfProfessors.put(this.schoolSubject.getProfessor(), new HashMap<>());
+        this.student.listOfProfessors.add(this.schoolSubject.getProfessor());
+        this.student.listOfSubjects.add(schoolSubject);
+
         allAbsences.add(this);
     }
 

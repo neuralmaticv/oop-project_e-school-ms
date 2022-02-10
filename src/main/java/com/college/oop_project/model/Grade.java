@@ -20,7 +20,8 @@ public class Grade implements Comparable<Grade> {
         this.student.setSchool(schoolSubject.getSchool());
         this.student.setSchoolGrade(schoolSubject.getSubject().getSchoolGrade());
         this.student.listOfGrades.add(this);
-        this.student.listOfProfessors.put(this.schoolSubject.getProfessor(), new HashMap<>());
+        this.student.listOfProfessors.add(this.schoolSubject.getProfessor());
+        this.student.listOfSubjects.add(schoolSubject);
 
         grades.add(this);
     }

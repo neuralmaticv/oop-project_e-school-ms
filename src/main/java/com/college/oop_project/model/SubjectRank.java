@@ -7,7 +7,7 @@ public class SubjectRank {
     private final SchoolSubject schoolSubject;
     private final Question question;
     private final int grade;
-    private ArrayList<SubjectRank> subjectRanks = new ArrayList<>();
+    private static ArrayList<SubjectRank> subjectRanks = new ArrayList<>();
 
     public SubjectRank(int schoolSubjectID, int studentID, int questionID, int rank) {
         this.student = Student.getStudentWithID(studentID);
@@ -32,5 +32,16 @@ public class SubjectRank {
 
     public int getGrade() {
         return grade;
+    }
+
+    public static ArrayList<SubjectRank> getSubjectRank(SchoolSubject schoolSubject, Student student) {
+        ArrayList<SubjectRank> list = new ArrayList<>();
+        for (SubjectRank sr : subjectRanks) {
+            if (sr.getSchoolSubject().equals(schoolSubject) && sr.student.equals(student)) {
+                list.add(sr);
+            }
+        }
+
+        return list;
     }
 }

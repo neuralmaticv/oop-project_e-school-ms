@@ -2,9 +2,7 @@ package com.college.oop_project.model;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Student {
     private final int studentID;
@@ -14,8 +12,8 @@ public class Student {
     private SchoolGrade schoolGrade;
     private final Sex sex;
     private final AccessData accessData;
-    public ArrayList<SchoolSubject> listOfSubjects = new ArrayList<>();
-    public Map<Professor, Map<Question, String>> listOfProfessors = new HashMap<>();
+    public Set<SchoolSubject> listOfSubjects = new HashSet<>();
+    public Set<Professor> listOfProfessors = new HashSet<>();
     public ArrayList<Grade> listOfGrades = new ArrayList<>();
     public ArrayList<Absences> listOfAbsences = new ArrayList<>();
     public static ArrayList<Student> allStudents = new ArrayList<>();
@@ -78,7 +76,7 @@ public class Student {
         return accessData;
     }
 
-    public ArrayList<SchoolSubject> getListOfSubjects() {
+    public Set<SchoolSubject> getListOfSubjects() {
         return listOfSubjects;
     }
 
@@ -157,22 +155,6 @@ public class Student {
         }
     }
 
-    public Map<Question, String> getQuestionsAndAnswersForProfessor(String fullName) {
-        Map<Question, String> list = new HashMap<>();
-
-        for (Map.Entry<Professor, Map<Question, String>> pq : this.listOfProfessors.entrySet()) {
-            if (pq.getKey().getFullName().equals(fullName) && !pq.getValue().isEmpty()) {
-                for (Map.Entry<Question, String> qs : pq.getValue().entrySet()) {
-                    if (!qs.getValue().isBlank()) {
-                        list.put(qs.getKey(), qs.getValue());
-                    }
-                }
-            }
-        }
-
-        return list;
-    }
-
     public boolean hasAtLeastOneGrade(Subject subject) {
         for (Grade g: listOfGrades) {
             if (g.getSubject().equals(subject)) {
@@ -206,6 +188,16 @@ public class Student {
         sb.append(this.firstName).append(" ").append(this.lastName);
 
         return sb.toString();
+    }
+
+    public boolean isInListOfSubjects(SchoolSubject sc) {
+        for (SchoolSubject s : listOfSubjects) {
+            if (sc.equals(s)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
