@@ -18,7 +18,7 @@ public class AccessData {
         if (!exists(this)) {
             allAccessData.add(this);
         } else {
-            throw new Exception("Postoji osoba sa zadatim podacima!");
+            throw new Exception("Postoji korisnicki nalog sa zadatim podacima!");
         }
     }
 
@@ -44,6 +44,10 @@ public class AccessData {
 
     public String getUserPassword() {
         return userPassword;
+    }
+
+    public void setNewUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 
     public String getUserMail() {

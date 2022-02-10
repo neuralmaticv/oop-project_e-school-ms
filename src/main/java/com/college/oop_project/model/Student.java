@@ -1,5 +1,7 @@
 package com.college.oop_project.model;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +31,12 @@ public class Student {
     }
 
     public static Student getStudentWithID(int id) {
-        return allStudents.get(id - 1);
+        for (Student s : allStudents) {
+            if (s.studentID == id) {
+                return s;
+            }
+        }
+        return null;
     }
 
     public String getFirstName() {
@@ -38,6 +45,10 @@ public class Student {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
     }
 
     public School getSchool() {
@@ -105,6 +116,47 @@ public class Student {
         return null;
     }
 
+    public boolean isInClass(Subject subject, LocalDate date, Professor professor) {
+        for (Absences ab : listOfAbsences) {
+            if (ab.getSchoolSubject().getSubject().equals(subject) && ab.getDate().equals(date) && ab.getSchoolSubject().getProfessor().equals(professor)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public int smallestDifferenceBetweenDates(Subject subject, LocalDate date) {
+        int maxDifference = 100;
+        for (Absences ab : listOfAbsences) {
+            if (ab.getSchoolSubject().getSubject().equals(subject)) {
+                Period difference = Period.between(ab.getDate(), date);
+                int diff = Math.abs(difference.getDays());
+
+                if (diff < maxDifference) {
+                    maxDifference = diff;
+                }
+            }
+        }
+
+        return maxDifference;
+    }
+
+    public boolean hasReceivedTwoOrMoreGrades(LocalDate date) {
+        int counter = 0;
+        for (Grade g : listOfGrades) {
+            if (g.getDate().equals(date)) {
+                counter++;
+            }
+        }
+
+        if (counter >= 2) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public Map<Question, String> getQuestionsAndAnswersForProfessor(String fullName) {
         Map<Question, String> list = new HashMap<>();
 
@@ -121,11 +173,49 @@ public class Student {
         return list;
     }
 
+    public boolean hasAtLeastOneGrade(Subject subject) {
+        for (Grade g: listOfGrades) {
+            if (g.getSubject().equals(subject)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasAtLeastOneAbsence(Subject subject) {
+        for (Absences ab: listOfAbsences) {
+            if (ab.getSubject().equals(subject)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Student getStudentWithName(String name, String surname) {
+        for (Student s : allStudents) {
+            if (s.firstName.equals(name) && s.lastName.equals(surname)) {
+                return s;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(this.firstName).append(" ").append(this.lastName);
 
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Student student = (Student) o;
+
+        return this.firstName.equals(student.firstName) && this.lastName.equals(student.lastName) &&
+                this.sex.equals(student.sex);
     }
 }

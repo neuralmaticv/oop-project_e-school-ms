@@ -30,8 +30,15 @@ public class SchoolSubject {
     }
 
     public static SchoolSubject getSchoolSubjectWithID(int id) {
-        return schoolSubjects.get(id - 1);
+        for (SchoolSubject sb : schoolSubjects) {
+            if (sb.schoolSubjectID == id) {
+                return  sb;
+            }
+        }
+
+        return null;
     }
+
 
     public Subject getSubject() {
         return subject;
@@ -59,13 +66,14 @@ public class SchoolSubject {
         return null;
     }
 
-    @Override
-    public String toString() {
-        return "SchoolSubject{" +
-                "schoolSubjectID=" + schoolSubjectID +
-                ", subject=" + subject +
-                ", school=" + school +
-                ", professor=" + professor +
-                '}';
+    public static ArrayList<SchoolSubject> getAllSchoolSubjectsOfProfessor(Professor professor) {
+        ArrayList<SchoolSubject> list = new ArrayList<>();
+        for (SchoolSubject sc : schoolSubjects) {
+            if (sc.getProfessor().equals(professor)) {
+                list.add(sc);
+            }
+        }
+
+        return list;
     }
 }

@@ -11,8 +11,6 @@ public class Professor {
     private final String lastName;
     private final Sex sex;
     private final AccessData accessData;
-    //public Set<School> schools = new HashSet<>();
-    //public Set<Subject> subjects = new HashSet<>();
     public Map<School, Set<Subject>> schoolAndSubjects = new HashMap<>();
     public static ArrayList<Professor> allProfessors = new ArrayList<>();
 
@@ -27,7 +25,13 @@ public class Professor {
     }
 
     public static Professor getProfessorWithID(int id) {
-        return allProfessors.get(id - 1);
+        for (Professor p: allProfessors) {
+            if (p.professorID == id) {
+                return p;
+            }
+        }
+
+        return null;
     }
 
     public String getFirstName() {
@@ -85,8 +89,7 @@ public class Professor {
 
         Professor professor = (Professor) o;
 
-        if (firstName != null ? !firstName.equals(professor.firstName) : professor.firstName != null) return false;
-        if (lastName != null ? !lastName.equals(professor.lastName) : professor.lastName != null) return false;
-        return sex == professor.sex;
+        return this.firstName.equals(professor.firstName) && this.lastName.equals(professor.lastName) &&
+                this.sex.equals(professor.sex);
     }
 }

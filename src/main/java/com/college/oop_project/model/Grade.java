@@ -1,27 +1,21 @@
 package com.college.oop_project.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Grade implements Comparable<Grade> {
     private Student student;
     private SchoolSubject schoolSubject;
     private int grade;
-    private String date;
+    private LocalDate date;
     public static ArrayList<Grade> grades = new ArrayList<>();
 
-    public Grade(int studentID, int schoolSubjectID, int grade, String date) throws Exception {
-        if (grade < 1 || grade > 5) {
-            throw new Exception("Nedozvoljen unos, ocjena treba da bude u opsegu od 1 do 5.");
-        }
-
+    public Grade(int studentID, int schoolSubjectID, int grade, String date) {
         this.student = Student.getStudentWithID(studentID);
         this.schoolSubject = SchoolSubject.getSchoolSubjectWithID(schoolSubjectID);
         this.grade = grade;
-        this.date = date;
+        this.date = LocalDate.parse(date);
 
         this.student.setSchool(schoolSubject.getSchool());
         this.student.setSchoolGrade(schoolSubject.getSubject().getSchoolGrade());
@@ -40,46 +34,47 @@ public class Grade implements Comparable<Grade> {
     }
 
     public String getSubjectName() {
-        return schoolSubject.getSubject().getName();
+        return schoolSubject.getSubject().getName() + " " + schoolSubject.getSubject().getSchoolGrade();
     }
 
     public Professor getProfessor() {
         return schoolSubject.getProfessor();
     }
 
-    public int getGrade() {
-        return grade;
-    }
     public int getSubjectGrade() {
         return grade;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Info about grade:").append("\n");
-        sb.append("Student name: ").append(this.student.getFirstName()).append("\n");
-        sb.append("Student lastname: ").append(this.student.getLastName()).append("\n");
-        sb.append("Subject: ").append(this.getSubject().getName()).append("\n");
-        sb.append("Professor: ").append(this.getProfessor().getFirstName() + this.getProfessor().getLastName()).append("\n");
-        sb.append("Grade: ").append(this.grade).append("\n");
+        return "" + grade;
+    }
 
-        return sb.toString();
+    public static ArrayList<Grade> getAllGradesForStudent(Student s, Subject subject, School school) {
+        ArrayList<Grade> grades = new ArrayList<>();
+
+        for (Grade g: grades) {
+            if (g.student.equals(s) && g.schoolSubject.getSubject().equals(subject) && g.schoolSubject.getSchool().equals(school)) {
+                grades.add(g);
+            }
+        }
+
+        return grades;
     }
 
     @Override
     public int compareTo(Grade o) {
-        List<Integer> dl = Arrays.stream(date.split("-")).map(Integer::parseInt).collect(Collectors.toList());
-        List<Integer> oDL = Arrays.stream(o.date.split("-")).map(Integer::parseInt).collect(Collectors.toList());
-
-        if (dl.get(1) == oDL.get(1)) {
-            return Integer.compare(dl.get(2), oDL.get(2));
+        if (this.date.getYear() == o.date.getYear()) {
+            if (this.date.getMonthValue() == o.date.getMonthValue()) {
+                return Integer.compare(this.date.getDayOfMonth(), this.date.getDayOfMonth());
+            } else {
+                return Integer.compare(this.date.getMonthValue(), o.date.getMonthValue());
+            }
         } else {
-            return Integer.compare(dl.get(1), oDL.get(1));
+            return Integer.compare(this.date.getYear(), o.date.getYear());
         }
     }
 }

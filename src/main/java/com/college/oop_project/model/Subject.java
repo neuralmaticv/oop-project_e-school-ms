@@ -21,7 +21,13 @@ public class Subject {
     }
 
     public static Subject getSubjectWithID(int id) {
-        return subjects.get(id - 1);
+        for (Subject s : subjects) {
+            if (s.subjectID == id) {
+                return s;
+            }
+        }
+
+        return null;
     }
 
     private boolean subjectExist(Subject subject) {

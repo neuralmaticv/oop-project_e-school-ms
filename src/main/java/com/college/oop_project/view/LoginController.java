@@ -13,20 +13,13 @@ import java.util.regex.Pattern;
 
 public class LoginController implements Initializable {
     @FXML
-    private TextField usernameInput;
-
+    private TextField usernameInput, passwordText;
     @FXML
     private PasswordField userpassInput;
-
-    @FXML
-    private TextField passwordText;
-
     @FXML
     private Label loginErrorMsg;
-
     @FXML
     private Button btnSubmit;
-
     @FXML
     private CheckBox showPassBtn;
 
