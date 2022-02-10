@@ -22,6 +22,7 @@ public class DBUtils {
         getGradesFromDB();
         getQuestionsFromDB();
         getAbsencesFromDB();
+        getSubjectRankFromDB();
 
         dr.endConnection();
     }
@@ -206,6 +207,25 @@ public class DBUtils {
         }
     }
 
+    private static void getSubjectRankFromDB() {
+        try {
+            Statement statement = dr.getConn().createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from ocjena_predmeta");
+
+            while (resultSet.next()) {
+                int schoolSubjectID = resultSet.getInt("predmet_u_skoli_id");
+                int studentID = resultSet.getInt("ucenik_id");
+                int questionID = resultSet.getInt("pitanje_id");
+                int rank = resultSet.getInt("ocjena");
+
+                new SubjectRank(schoolSubjectID, studentID, questionID, rank);
+            }
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+    }
+
+
     public static void addSchoolToDB(String name, String place, String city, String country) {
         dr.startConnection();
 
@@ -380,6 +400,26 @@ public class DBUtils {
             statement.executeUpdate();
 
             new Grade(studentID, schoolSubjectID, grade, date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        dr.endConnection();
+    }
+
+    public static void addSubjectRankToDB(int schoolSubjectID, int studentID, int questionID, int grade) {
+        dr.startConnection();
+
+        try {
+            String query = "INSERT INTO ocjena_predmeta(predmet_u_skoli_id, ucenik_id, pitanje_id, ocjena) VALUES (?,?,?,?)";
+            PreparedStatement statement = dr.getConn().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, schoolSubjectID);
+            statement.setInt(2, studentID);
+            statement.setInt(3, questionID);
+            statement.setInt(4, grade);
+            statement.executeUpdate();
+
+            new SubjectRank(schoolSubjectID, studentID, questionID, grade);
         } catch (Exception e) {
             e.printStackTrace();
         }

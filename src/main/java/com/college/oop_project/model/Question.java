@@ -18,8 +18,21 @@ public class Question {
         return questions.get(index).question;
     }
 
+    public static Question getQuestionWithID(int questionID) {
+        for (Question q: questions) {
+            if (q.questionID == questionID) {
+                return q;
+            }
+        }
+        return null;
+    }
+
     public String getQuestion() {
         return question;
+    }
+
+    public int getQuestionID() {
+        return questionID;
     }
 
     @Override
