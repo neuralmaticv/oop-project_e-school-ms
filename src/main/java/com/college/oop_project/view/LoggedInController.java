@@ -107,7 +107,7 @@ public class LoggedInController implements Initializable {
 
 
     @FXML
-    private Pane showAddSchoolSubjectPane, showAddGradeOrAbsencePane, allStudentsPane;
+    private Pane showAddSchoolSubjectPane, showAddGradeOrAbsencePane, allStudentsPane, showAllSubjectGrades;
     @FXML
     private ChoiceBox<School> cboxSelectSchool, cboxSelectProfSchool;
     @FXML
@@ -129,7 +129,7 @@ public class LoggedInController implements Initializable {
     @FXML
     private TableColumn tbStudentInfo;
     @FXML
-    private TextArea taStudentInfo;
+    private TextArea taStudentInfo, taAllGradesForProf;
 
 
 
@@ -202,7 +202,7 @@ public class LoggedInController implements Initializable {
     private Menu menu1, menu2, menu3, menu4;
     @FXML
     private MenuItem miShowGrades, miShowAbsences, miShowRankProfessor, miShowAddNewProfessor, miShowAddNewSubject,
-            miShowAddNewSchool, miShowAddSchoolSubject, miAddGradeAbsence;
+            miShowAddNewSchool, miShowAddSchoolSubject;
 
 
     private Student studentUser;
@@ -827,6 +827,21 @@ public class LoggedInController implements Initializable {
         });
     }
 
+    public void showAllSubjectGrades() {
+        hideVisiblePane();
+        showAllSubjectGrades.setVisible(true);
+        StringBuilder sb = new StringBuilder();
+
+        for (SubjectRank sr : SubjectRank.subjectRanks) {
+            if (sr.getSchoolSubject().getProfessor().equals(professorUser)) {
+                sb.append("Za predmet ").append(sr.getSchoolSubject().getSubject().getName()).append(" ");
+                sb.append(sr.getSchoolSubject().getSubject().getSchoolGrade()).append("\n");
+                sb.append(sr.getQuestion()).append(" | OCJENA: ").append(sr.getGrade()).append("\n");
+            }
+        }
+
+        taAllGradesForProf.setText(sb.toString());
+    }
 
     public void showChangePasswordPane() {
         hideVisiblePane();
@@ -876,6 +891,8 @@ public class LoggedInController implements Initializable {
             showAddGradeOrAbsencePane.setVisible(false);
         } else if (allStudentsPane.isVisible()) {
             allStudentsPane.setVisible(false);
+        } else if (showAllSubjectGrades.isVisible()) {
+            showAllSubjectGrades.setVisible(false);
         }
     }
 

@@ -6,12 +6,16 @@ import java.sql.SQLException;
 
 public class Driver {
     private Connection conn = null;
-    private final String url = "jdbc:mysql://localhost:3306/ors1_opp_2021_2022";
+    private final String url = "jdbc:mysql://localhost:3306/oop_project_db";
     private final String userName = "admin";
     private final String password = "Admin@dmin2022";
 
     public Driver() {
         startConnection();
+    }
+
+    public Connection getConn() {
+        return conn;
     }
 
     public void startConnection() {
@@ -20,10 +24,6 @@ public class Driver {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public Connection getConn() {
-        return conn;
     }
 
     public void endConnection() {

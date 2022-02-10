@@ -82,6 +82,7 @@
                                         <MenuItem mnemonicParsing="false" onAction="#showAddStudentPane" text="Dodaj novog ucenika" />
                               <MenuItem fx:id="miShowAddNewGradeAbsence" mnemonicParsing="false" onAction="#showAddGradeOrAbsence" text="Dodaj ocjenu ili izostanak" />
                               <MenuItem mnemonicParsing="false" onAction="#showAllStudentsPane" text="Svi ucenici" />
+                              <MenuItem mnemonicParsing="false" onAction="#showAllSubjectGrades" text="Pogledaj ocjene" />
                                     </items>
                                 </Menu>
                             </menus>
@@ -469,6 +470,16 @@
                                  </columns>
                               </TableView>
                               <TextArea fx:id="taStudentInfo" layoutX="252.0" layoutY="134.0" prefHeight="294.0" prefWidth="225.0" visible="false" />
+                           </children>
+                        </Pane>
+                        <Pane fx:id="showAllSubjectGrades" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <TextArea fx:id="taAllGradesForProf" layoutX="19.0" layoutY="68.0" prefHeight="333.0" prefWidth="485.0" />
+                              <Label layoutX="230.0" layoutY="35.0" text="Ocjene:">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </Pane>
                             </children>

@@ -7,7 +7,7 @@ public class SubjectRank {
     private final SchoolSubject schoolSubject;
     private final Question question;
     private final int grade;
-    private static ArrayList<SubjectRank> subjectRanks = new ArrayList<>();
+    public static ArrayList<SubjectRank> subjectRanks = new ArrayList<>();
 
     public SubjectRank(int schoolSubjectID, int studentID, int questionID, int rank) {
         this.student = Student.getStudentWithID(studentID);
