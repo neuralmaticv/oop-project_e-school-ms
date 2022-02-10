@@ -23,7 +23,6 @@ public class DBUtils {
         getQuestionsFromDB();
         getAbsencesFromDB();
 
-
         dr.endConnection();
     }
 
@@ -43,6 +42,24 @@ public class DBUtils {
         } catch (Exception err) {
             err.printStackTrace();
         }
+    }
+
+    public static void updateAccessDataInDB(int accessDataID, String username, String newPassword) {
+        dr.startConnection();
+
+        try {
+            String query = "UPDATE pristupni_podaci SET sifra = ? WHERE korisnicko_ime = ?";
+            PreparedStatement statement = dr.getConn().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, getHashValue(newPassword));
+            statement.setString(2, username);
+            statement.executeUpdate();
+
+            AccessData.getUser(accessDataID).setNewUserPassword(getHashValue(newPassword));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        dr.endConnection();
     }
 
     private static void getSchoolsFromDB() {
@@ -188,16 +205,6 @@ public class DBUtils {
             err.printStackTrace();
         }
     }
-
-
-
-
-
-
-
-
-
-
 
     public static void addSchoolToDB(String name, String place, String city, String country) {
         dr.startConnection();
@@ -368,7 +375,7 @@ public class DBUtils {
             PreparedStatement statement = dr.getConn().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setInt(1, studentID);
             statement.setInt(2, schoolSubjectID);
-            statement.setInt(2, grade);
+            statement.setInt(3, grade);
             statement.setDate(4, Date.valueOf(date));
             statement.executeUpdate();
 
