@@ -9,7 +9,7 @@ public class Main {
         View GUIView = new GUIView();
         View CMDView = new ConsoleView();
 
-        StudentManagementSystem smsapp = new StudentManagementSystem(CMDView);
+        StudentManagementSystem smsapp = new StudentManagementSystem(GUIView);
         smsapp.run();
     }
 }
