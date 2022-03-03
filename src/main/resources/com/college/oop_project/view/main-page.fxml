@@ -91,7 +91,7 @@
                     <center>
                         <AnchorPane fx:id="" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
                             <children>
-                                <Pane fx:id="mainPane" prefHeight="468.0" prefWidth="523.0" visible="false" AnchorPane.bottomAnchor="0.8000000000000114" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <Pane fx:id="mainPane" prefHeight="468.0" prefWidth="523.0" visible="true" AnchorPane.bottomAnchor="0.8000000000000114" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <children>
                                         <Label layoutX="196.0" layoutY="85.0" style="-fx-font-weight: bold;" text="eDnevnik">
                                             <font>
