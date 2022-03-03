@@ -12,8 +12,11 @@
 ---
 
 ## Opis projekta
+**Tema projekta:** eDnevnik (elektronski dnevnik)
+
 ### Zadatak
 Specifikaciju možete pronaći na ovom [linku](https://github.com/vladocodes/oop-project/blob/main/documentation/project_specification_sr.pdf).
+
 ### Korištene tehnologije i alati
 <p>
 <img src="https://img.shields.io/badge/java-red.svg?&style=for-the-badge&logo=java&logoColor=blue"/>&nbsp;&nbsp;&nbsp;
