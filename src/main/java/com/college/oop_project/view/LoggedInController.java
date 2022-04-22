@@ -244,9 +244,14 @@ public class LoggedInController implements Initializable {
         firstName.setText(user.getFirstName());
         lastName.setText(user.getLastName());
         email.setText(user.getAccessData().getUserMail());
-        school.setText("OŠ \"" + user.getSchool().getSchoolName() + "\"");
-        place.setText(user.getSchool().getPlace());
-        grade.setText(user.getSchoolGrade().toString());
+        if (user.getSchool() != null) {
+            school.setText("OŠ \"" + user.getSchool().getSchoolName() + "\"");
+            place.setText(user.getSchool().getPlace());
+            grade.setText(user.getSchoolGrade().toString());
+        } else {
+            school.setText("Nema podataka o školi.");
+        }
+
 
         menu1.setText("Ocjene");
         menu2.setText("Izostanci");
