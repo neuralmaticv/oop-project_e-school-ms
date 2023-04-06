@@ -15,7 +15,7 @@
 **Tema projekta:** eDnevnik (elektronski dnevnik)
 
 ### Zadatak
-Specifikaciju možete pronaći na ovom [linku](https://github.com/vladocodes/oop-project/blob/main/documentation/project_specification_sr.pdf).
+Specifikaciju možete pronaći na ovom [linku](https://github.com/neuralmaticv/oop-project/blob/main/documentation/project_specification_sr.pdf).
 
 ### Korištene tehnologije i alati
 <p>
@@ -27,14 +27,14 @@ Specifikaciju možete pronaći na ovom [linku](https://github.com/vladocodes/oop
 
 ## Screenshots
 
-<img width="1604" alt="login-screen" src="https://github.com/vladocodes/oop-project_e-school-ms/blob/main/documentation/screenshots/login-screen.png">
+<img width="1604" alt="login-screen" src="https://github.com/neuralmaticv/oop-project_e-school-ms/blob/main/documentation/screenshots/login-screen.png">
 
 | | | |
 |:-------------------------:|:-------------------------:|:-------------------------:|
-|<img width="1604" alt="main-screen-prof" src="https://github.com/vladocodes/oop-project_e-school-ms/blob/main/documentation/screenshots/main-screen-prof.png"> | <img width="1604" alt="prof-option-to-add-new-grade" src="https://github.com/vladocodes/oop-project_e-school-ms/blob/main/documentation/screenshots/prof-option-to-add-new-grade.png"> | <img width="1604" alt="prof-option-to-add-new-prof" src="https://github.com/vladocodes/oop-project_e-school-ms/blob/main/documentation/screenshots/prof-option-to-add-new-prof.png">|
-|<img width="1604" alt="stud-option-to-list-grades" src="https://github.com/vladocodes/oop-project_e-school-ms/blob/main/documentation/screenshots/stud-option-to-list-grades.png"> | <img width="1604" alt="stud-option-to-list-absences" src="https://github.com/vladocodes/oop-project_e-school-ms/blob/main/documentation/screenshots/stud-option-to-list-absences.png"> | <img width="1604" alt="stud-option-to-rate-prof" src="https://github.com/vladocodes/oop-project_e-school-ms/blob/main/documentation/screenshots/stud-option-to-rate-prof.png">|
+|<img width="1604" alt="main-screen-prof" src="https://github.com/neuralmaticv/oop-project_e-school-ms/blob/main/documentation/screenshots/main-screen-prof.png"> | <img width="1604" alt="prof-option-to-add-new-grade" src="https://github.com/neuralmaticv/oop-project_e-school-ms/blob/main/documentation/screenshots/prof-option-to-add-new-grade.png"> | <img width="1604" alt="prof-option-to-add-new-prof" src="https://github.com/neuralmaticv/oop-project_e-school-ms/blob/main/documentation/screenshots/prof-option-to-add-new-prof.png">|
+|<img width="1604" alt="stud-option-to-list-grades" src="https://github.com/neuralmaticv/oop-project_e-school-ms/blob/main/documentation/screenshots/stud-option-to-list-grades.png"> | <img width="1604" alt="stud-option-to-list-absences" src="https://github.com/neuralmaticv/oop-project_e-school-ms/blob/main/documentation/screenshots/stud-option-to-list-absences.png"> | <img width="1604" alt="stud-option-to-rate-prof" src="https://github.com/neuralmaticv/oop-project_e-school-ms/blob/main/documentation/screenshots/stud-option-to-rate-prof.png">|
 
 ---
 
 ## Licenca
-Ovaj projekat se nalazi pod [MIT licencom](https://github.com/vladocodes/oop-project/blob/main/LICENSE).
+Ovaj projekat se nalazi pod [MIT licencom](https://github.com/neuralmaticv/oop-project/blob/main/LICENSE).
